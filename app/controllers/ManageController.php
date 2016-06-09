@@ -239,7 +239,7 @@
 
       if ($treatments->snake_group == 1) {
         if ($treatments->state == 0){
-          if ($Platelet < 50000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
+          if ($Platelet < 100000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
             $treatments->state = 4;
             $treatments->status = 2;
             $treatments->staterepeat = 0 ;
@@ -259,7 +259,7 @@
         }
 
         if ($treatments->state == 2){
-          if ($Platelet < 50000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
+          if ($Platelet < 100000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
             $treatments->state = 4;
             $treatments->status = 2;
             $treatments->staterepeat = 0 ;
@@ -288,7 +288,7 @@
         }
 
         if ($treatments->state == 3){
-          if ($Platelet < 50000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
+          if ($Platelet < 100000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
             $treatments->state = 4;
             $treatments->staterepeat = 0 ;
             $treatments->status = 2;
@@ -318,8 +318,8 @@
         }
 
         if ($treatments->state == 5){
-          if ($Platelet < 50000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
-            $treatments->state = 7;
+          if ($Platelet < 100000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
+            $treatments->state = 9;
             $treatments->status = 1;
             $treatments->staterepeat = 0 ;
             $treatments->save();

@@ -52,7 +52,7 @@
 
 
 @section('customjs')
-  @if($patientdata->snake_group == 1 and  $patientdata->state !==7)
+  @if($patientdata->snake_group == 1 and  $patientdata->state !==7 and $patientdata->state !==9 )
     <script>
   ///////////////////// start flow chart ////////////////////////////////////////////////////////////
     flowSVG.draw(SVG('drawing').size(1000, 1500));
@@ -71,7 +71,8 @@
         label: 'checkGreen1',
         type: 'process',
         text: [
-                'การดูแลผู้ป่วยถูก{{ $patientdata->snake_thai_name }}กัด',
+                'การดูแลผู้ป่วยถูก',
+                '{{$patientdata->snake_thai_name}}กัด',
 
             ],
 
@@ -208,7 +209,7 @@
         );
   </script>
   @endif
-  @if($patientdata->snake_group == 1 and $patientdata->state==7 or $patientdata->state==8)
+  @if($patientdata->snake_group == 1 and $patientdata->state==7 or $patientdata->state==8 or $patientdata->state==9)
     <script>
   ///////////////////// start flow chart ////////////////////////////////////////////////////////////
     flowSVG.draw(SVG('drawing').size(900, 1200));

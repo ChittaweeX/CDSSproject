@@ -97,6 +97,9 @@
                      @if($pdata->state == 8)
                       <strong>Wrong Snake type</strong>
                      @endif
+                     @if($pdata->state == 9)
+                      <strong>Consult PC</strong>
+                     @endif
 
                    @endif
 
