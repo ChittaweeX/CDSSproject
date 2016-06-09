@@ -22,32 +22,13 @@
         <div class="box">
           <form role="form" action="{{ url('function/confirmmanagement') }}" method="post">
             <input type="hidden" name="treatmentid" value="{{ $patientdata->record_id }}">
-            @if($patientdata->stage == 1)
-              <input type="hidden" name="logtext" value="{{ $patientdata->antivenom }}">
-              @else
-                @if ($patientdata->snake_type == 1 or $patientdata->snake_type == 2 or $patientdata->snake_type == 3)
-                  <input type="hidden" name="logtext" value="blood test">
-                @endif
-              @endif
-
-              @if($patientdata->snake_type == 4 or $patientdata->snake_type == 5 or $patientdata->snake_type == 6 or $patientdata->snake_type == 7)
-                @if ($patientdata->stage == 1)
-                  <input type="hidden" name="logtext" value="Observe motor weaknes">
-                @elseif($patientdata->stage == 4)
-                  <input type="hidden" name="logtext" value="Observe motor weaknes">
-                @elseif($patientdata->stage !== 8)
-                  <input type="hidden" name="logtext" value="{{ $patientdata->antivenom }}">
-                @elseif($patientdata->stage == 8)
-                  <input type="hidden" name="logtext" value="Done">
-                @endif
-              @elseif($patientdata->stage == 9)
-                <input type="hidden" name="logtext" value="Done">
-
-
-              @endif
-
-
-
+          @if (!empty($patientdata->state_give))
+            <input type="hidden" name="logtext" value="{{$patientdata->state_give}} {{$patientdata->snake_name}}{{$patientdata->state_vials}}">
+            @else
+            @if ($patientdata->snake_group == 1)
+              <input type="hidden" name="logtext" value="Blood Test">
+            @endif
+          @endif
 
 
           <div class="box-header with-border">
@@ -79,23 +60,13 @@
 
               <div class="panel panel-danger">
                 <div class="panel-heading">
-                  <h2 class="panel-title"><strong>Give</strong></h2>
+                  <h2 class="panel-title"><strong>Management</strong></h2>
                 </div>
                 <div class="panel-body">
-
-
-                      <h2 class="text-danger"><strong>
-                      {{ $patientdata->antivenom }}
-                      </strong></h2>
-
-                      @if($patientdata->antivenom == '')
-                        <h2 class="text-success"><strong>
-                        None
-                        </strong></h2>
-                      @endif
-
-
-
+                  @if (!empty($patientdata->state_give))
+                    <h2>{{$patientdata->state_give}} {{$patientdata->snake_name}}{{$patientdata->state_vials}}</h2>
+                  @endif
+                  <h2>{{$patientdata->state_repeat}}</h2>
 
                 </div>
               </div>

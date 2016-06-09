@@ -29,8 +29,8 @@
                 <th>National id </th>
                 <th >Name</th>
                 <th >Snake</th>
-                <th>Now Stage</th>
-                <th>Next Repeat in</th>
+                <th>Now State</th>
+                <th>Repeat</th>
                 <th>Status</th>
                 <th>
                   Create At
@@ -42,7 +42,7 @@
              @foreach($patientdata as $pdata)
                <tr>
                  <td>{{ $pdata->patient_national_id }}</td>
-                 <td width="12%">{{ $pdata->patient_name }}</td>
+                 <td width="10%">{{ $pdata->patient_name }}</td>
                  <td >
                    @if ($pdata->snake_type==1)
                      งูแมวเซา
@@ -71,46 +71,53 @@
                  </td>
                  <td>
                    @if ($pdata->snake_type == 1 or $pdata->snake_type == 2 or $pdata->snake_type == 3)
-
-                     @if($pdata->stage == 1)
+                     @if($pdata->state == 1)
                       <strong>Give Antivenom and Waiting Repeat Bloodtest</strong>
                      @endif
-                     @if($pdata->stage == 2)
+                     @if($pdata->state == 2)
+                      <strong>Repeat CBC,PT,INR,20 min WBCT q 6 hr for 2 time
+                      <br>(6,12)</strong>
+                     @endif
+                     @if($pdata->state == 3)
+                      <strong>D/C CBC,PT,INR,20 min WBCT,Creatinine
+                        <br>Once daily for 3 days (24-36,48-60,72-84)</strong>
+                     @endif
+                     @if($pdata->state == 4)
+                       <strong>Give Antivenom and Repeat blood test</strong>
+                     @endif
+                     @if($pdata->state == 5)
                       <strong>Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time</strong>
                      @endif
-                     @if($pdata->stage == 3)
-                      <strong>CBC,PT,INR,20 min WBCT q 6 hr for 2 time (6,12)</strong>
-                     @endif
-                     @if($pdata->stage == 4)
-                       <strong>D/C CBC,PT,INR,20 min WBCT,Creatinine Once daily for 3 days(24-36,48-60,72-84)</strong>
-                     @endif
-                     @if($pdata->stage == 5)
+                     @if($pdata->state == 6)
                       <strong>Done</strong>
                      @endif
-                     @if($pdata->stage == 0)
+                     @if($pdata->state == 7)
                       <strong>Consult PC</strong>
+                     @endif
+                     @if($pdata->state == 8)
+                      <strong>Wrong Snake type</strong>
                      @endif
 
                    @endif
 
                    @if ($pdata->snake_type == 4 or $pdata->snake_type == 5 or $pdata->snake_type == 6 or $pdata->snake_type == 7)
 
-                     @if($pdata->stage == 1)
+                     @if($pdata->state == 1)
                       <strong>Observe motor weakness q 1 hr for 24 hr</strong>
                      @endif
-                     @if($pdata->stage == 2)
+                     @if($pdata->state == 2)
                       <strong>Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time</strong>
                      @endif
-                     @if($pdata->stage == 3)
+                     @if($pdata->state == 3)
                       <strong>CBC,PT,INR,20 min WBCT q 6 hr for 2 time (6,12)</strong>
                      @endif
-                     @if($pdata->stage == 4)
+                     @if($pdata->state == 4)
                        <strong>Observe motor weakness q 1 hr for 12 hr</strong>
                      @endif
-                     @if($pdata->stage == 5)
+                     @if($pdata->state == 5)
                       <strong>Done</strong>
                      @endif
-                     @if($pdata->stage == 0)
+                     @if($pdata->state == 0)
                       <strong>Consult PC</strong>
                      @endif
 
@@ -118,39 +125,41 @@
                    @endif
 
                  </td>
-                 <td width="10%">
-                   <div data-countdown="{{ $datenow }} 07:00:00"></div>
+                 <td width="4%">
+                   @if ($pdata->nextbloodtest != 0)
+                     <div data-countdown="{{ $pdata->nextbloodtest}}"></div>
+                   @endif
                  </td>
                  <td>
                    @if($pdata->status == 1)
                      <span class="label label-danger">Consult PC</span>
                    @elseif($pdata->status == 2)
-                     <span class="label label-warning">Waiting Repeat Bloodtest</span>
+                     <span class="label label-warning">Repeat Bloodtest</span>
                    @elseif($pdata->status == 3)
                      <span class="label label-success">Done</span>
                    @elseif($pdata->status == 4)
-                     <span class="label label-info">Waiting Repeat Observe</span>
+                     <span class="label label-info">Repeat Observe</span>
                    @endif
                  </td>
                  <td>
                    {{ $pdata->created_at }}
                  </td>
-                 <td ><a href="{{ url("page/overview/$pdata->record_id/$pdata->stage") }}">
+                 <td ><a href="{{ url("page/overview/$pdata->record_id/$pdata->state") }}" data-toggle="tooltip" data-placement="bottom" title="Overview">
                    <button type="button" class="btn btn-sm btn-info btn-flat">
                      <i class="fa fa-file-text-o"></i>
                    </button></a>
-                   <a href="{{ url("page/flowchart/$pdata->record_id") }}">
+                   <a href="{{ url("page/flowchart/$pdata->record_id") }}" data-toggle="tooltip" data-placement="bottom" title="View flowchart">
                      <button type="button" class="btn btn-sm  btn-default btn-flat">
                        <i class="fa fa-sitemap"></i>
                      </button></a>
                    @if($pdata->status == 2 )
-                     <a href="{{ url("page/symptom/$pdata->record_id") }}">
+                     <a href="{{ url("page/symptom/$pdata->record_id") }}" data-toggle="tooltip" data-placement="bottom" title="Repeat Bloodtest">
                        <button type="button" class="btn btn-sm btn-warning btn-flat">
                         <i class="fa fa-eyedropper"></i>
                        </button></a>
                    @endif
                    @if($pdata->status == 4 )
-                     <a href="{{ url("page/symptom/$pdata->record_id") }}">
+                     <a href="{{ url("page/symptom/$pdata->record_id") }}" data-toggle="tooltip" data-placement="bottom" title="Repeat Observe">
                        <button type="button" class="btn btn-sm btn-warning btn-flat">
                          <i class="fa fa-stethoscope"></i>
                        </button></a>
@@ -202,7 +211,7 @@
   $('[data-countdown]').each(function() {
    var $this = $(this), finalDate = $(this).data('countdown');
    $this.countdown(finalDate, function(event) {
-     $this.html(event.strftime('%H:%M:%S'));
+     $this.html(event.strftime('%D days %H:%M:%S'));
    });
  });
    </script>

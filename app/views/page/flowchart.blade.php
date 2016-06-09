@@ -52,7 +52,7 @@
 
 
 @section('customjs')
-  @if($patientdata->stage==1 or $patientdata->stage==2 or $patientdata->stage==3 or $patientdata->stage==4 or $patientdata->stage==5)
+  @if($patientdata->snake_group == 1 and  $patientdata->state !==7)
     <script>
   ///////////////////// start flow chart ////////////////////////////////////////////////////////////
     flowSVG.draw(SVG('drawing').size(1000, 1500));
@@ -87,7 +87,7 @@
           ],
             links: [
               {
-                  text: '{{ $patientdata->stage == 2 ? '****!!!CURRENT!!!****' : '' }}',
+                  text: '{{ $patientdata->state == 1 ? '****!!!CURRENT!!!****' : '' }}',
                   url: '',
                   target: ''
               }
@@ -116,7 +116,7 @@
       ],
       links: [
         {
-            text: '{{ $patientdata->stage == 3 ? '****!!!CURRENT!!!****' : '' }}',
+            text: '{{ $patientdata->state == 2 ? '****!!!CURRENT!!!****' : '' }}',
             url: '',
             target: ''
         }
@@ -144,7 +144,7 @@
       ],
       links: [
         {
-            text: '{{ $patientdata->stage == 4 ? '****!!!CURRENT!!!****' : '' }}',
+            text: '{{ $patientdata->state == 3 ? '****!!!CURRENT!!!****' : '' }}',
             url: '',
             target: ''
         }
@@ -208,10 +208,10 @@
         );
   </script>
   @endif
-  @if($patientdata->stage==0)
+  @if($patientdata->snake_group == 1 and $patientdata->state==7 or $patientdata->state==8)
     <script>
   ///////////////////// start flow chart ////////////////////////////////////////////////////////////
-    flowSVG.draw(SVG('drawing').size(900, 1100));
+    flowSVG.draw(SVG('drawing').size(900, 1200));
     flowSVG.config({
         interactive: false,
         showButtons: false,
@@ -221,6 +221,13 @@
     flowSVG.shapes(
       [
         {
+        label: 'checkGreen2',
+        type: 'process',
+        text: [
+                'Consult PC',
+            ],
+        next: 'knowTypesnake',
+        },{
   label: 'knowTypesnake',
   type: 'decision',
   text: [
@@ -242,9 +249,9 @@
   label: 'checkGreen2',
   type: 'process',
   text: [
-          'งxxx',
-          'Give xxxx vials',
-
+          '{{ $patientdata->snake_name }}',
+          '{{$patientdata->state_give}} {{$patientdata->snake_name}}',
+          '{{$patientdata->state_vials}}',
       ],
   next: 'canComply',
   },

@@ -23,11 +23,11 @@
           <div class="box-header with-border">
             <h3 class="box-title"><strong>Symptom Check</strong></h3>
           </div>
-          <div class="box-body">
-            <div class="col-sm-12">
-              <h3>Does the patient has systemic bleeding?</h3>
+          <div class="box-body text-center">
+            <div class="col-md-8 col-md-offset-2">
+              <h3><strong>Does the patient has systemic bleeding?</strong></h3>
                 <div class="row">
-                  <div class="col-sm-6">
+                  <div class="col-sm-12">
                     <div class="form-group">
                       <div class='radio-inline'>
                         <label>
@@ -46,9 +46,9 @@
                 </div>
 
                 <hr>
-                <h3>Does the patient have impending respiratory failure?</h3>
+                <h3><strong>Does the patient have impending respiratory failure?</strong></h3>
                 <div class="row">
-                  <div class="col-sm-6">
+                  <div class="col-sm-12">
                     <div class="form-group">
                       <div class='radio-inline'>
                         <label>
@@ -66,9 +66,9 @@
                   </div>
                 </div>
                 <hr>
-                <h3>Does the patient have Motor Weakness?</h3>
+                <h3><strong>Does the patient have Motor Weakness?</strong></h3>
                 <div class="row">
-                  <div class="col-sm-6">
+                  <div class="col-sm-12">
                     <div class="form-group">
                       <div class='radio-inline'>
                         <label>
@@ -88,63 +88,66 @@
                 <hr>
 
 
-                <h3>Type of snake</h3>
+                <h3><strong>Type of snake</strong></h3>
                 <div class="row">
-                  <div class="col-sm-8">
+                  <div class="col-sm-12">
                     <div class="form-group">
                       <div class='radio-inline'>
                         <label>
-                          <input type='radio' name='snaketype' value='1' required {{ $treatmentdata->snake_type == 1 ? 'checked' : '' }}>
                           <img src="http://placehold.it/150x150" alt="" />
-                          <h3>งูแมวเซา</h3>
+                          <h3><input type='radio' name='snaketype' value='1' required {{ $treatmentdata->snake_type == 1 ? 'checked' : '' }}>
+                            งูแมวเซา</h3>
                         </label>
                       </div>
                       <div class='radio-inline'>
                         <label>
-                          <input type='radio' name='snaketype' value='2'  {{ $treatmentdata->snake_type == 2 ? 'checked' : '' }}>
+
                           <img src="http://placehold.it/150x150" alt="" />
-                          <h3>งูเขียวหางไหม้</h3>
+                          <h3><input type='radio' name='snaketype' value='2'  {{ $treatmentdata->snake_type == 2 ? 'checked' : '' }}>
+                            งูเขียวหางไหม้</h3>
                         </label>
                       </div>
                       <div class='radio-inline'>
                         <label>
-                          <input type='radio' name='snaketype' value='3'  {{ $treatmentdata->snake_type == 3 ? 'checked' : '' }}>
                           <img src="http://placehold.it/150x150" alt="" />
-                          <h3>งูกะปะ</h3>
+                          <h3><input type='radio' name='snaketype' value='3'  {{ $treatmentdata->snake_type == 3 ? 'checked' : '' }}>
+                            งูกะปะ</h3>
                         </label>
                       </div><hr>
                       <div class='radio-inline'>
                         <label>
-                          <input type='radio' name='snaketype' value='4'  {{ $treatmentdata->snake_type == 4 ? 'checked' : '' }}>
                           <img src="http://placehold.it/150x150" alt="" />
-                          <h3>งูเห่า</h3>
+                          <h3><input type='radio' name='snaketype' value='4'  {{ $treatmentdata->snake_type == 4 ? 'checked' : '' }}>
+                            งูเห่า</h3>
                         </label>
                       </div>
                       <div class='radio-inline'>
                         <label>
-                          <input type='radio' name='snaketype' value='5'  {{ $treatmentdata->snake_type == 5 ? 'checked' : '' }}>
                           <img src="http://placehold.it/150x150" alt="" />
-                          <h3>งูจงอาง</h3>
+                          <h3><input type='radio' name='snaketype' value='5'  {{ $treatmentdata->snake_type == 5 ? 'checked' : '' }}>
+                            งูจงอาง</h3>
                         </label>
                       </div>
                       <div class='radio-inline'>
                         <label>
-                          <input type='radio' name='snaketype' value='6'  {{ $treatmentdata->snake_type == 6 ? 'checked' : '' }}>
+
                           <img src="http://placehold.it/150x150" alt="" />
-                          <h3>งูสามเหลี่ยม</h3>
+                          <h3><input type='radio' name='snaketype' value='6'  {{ $treatmentdata->snake_type == 6 ? 'checked' : '' }}>
+                            งูสามเหลี่ยม</h3>
                         </label>
                       </div>
                       <div class='radio-inline'>
                         <label>
-                          <input type='radio' name='snaketype' value='7'  {{ $treatmentdata->snake_type == 7 ? 'checked' : '' }}>
+
                           <img src="http://placehold.it/150x150" alt="" />
-                          <h3>งูทับสมิงคลา</h3>
+                          <h3><input type='radio' name='snaketype' value='7'  {{ $treatmentdata->snake_type == 7 ? 'checked' : '' }}>
+                            งูทับสมิงคลา</h3>
                         </label>
                       </div><hr>
                       <div class='radio-inline'>
                         <label>
-                          <input type='radio' name='snaketype' value='8'  {{ $treatmentdata->snake_type == 8 ? 'checked' : '' }}>
-                          <h2>งูไม่ทราบชนิด</h2>
+                          <h2><input type='radio' name='snaketype' value='8'  {{ $treatmentdata->snake_type == 8 ? 'checked' : '' }}>
+                            งูไม่ทราบชนิด</h2>
                         </label>
                       </div>
 
@@ -156,7 +159,8 @@
           </div><!-- /.box-body -->
           <div class="box-footer">
             <div class="text-center">
-              <button type="submit" class="btn btn-primary btn-lg btn-flat">Next</button>
+              <button type="submit" class="btn  btn-primary btn-lg btn-flat">Next</button>
+
             </div>
           </div><!-- /.box-footer-->
           </form>

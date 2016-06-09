@@ -34,33 +34,42 @@
     }
 
 
-    public function getConsult($treatmentid,$snakeid)
+    public function getConsult($treatmentid)
     {
+      $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+      ->where('record_id','=',$treatmentid)->first();
+      $snakegroup = $treatments->snake_group;
+      $state = $treatments->state;
+
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
-        ->join('stage', 'treatmentRecord.stage', '=', 'stage.stagename')
         ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+        ->join('state', 'snake.snake_group', '=', 'state.state_snakegroup')
         ->where('treatmentRecord.record_id','=',$treatmentid)
-        ->where('stage.snake_type','=',$snakeid)->first(),
+        ->where('state.state_snakegroup','=',$snakegroup)
+        ->where('state.state_number','=',$state)->first(),
       );
       return View::make('page.consult',$data);
     }
-    public function getManagement($treatmentid,$snakeid)
+    public function getManagement($treatmentid)
     {
+      $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+      ->where('record_id','=',$treatmentid)->first();
+      $snakegroup = $treatments->snake_group;
+      $state = $treatments->state;
+
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
-        ->join('stage', 'treatmentRecord.stage', '=', 'stage.stagename')
         ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+        ->join('state', 'snake.snake_group', '=', 'state.state_snakegroup')
         ->where('treatmentRecord.record_id','=',$treatmentid)
-        ->where('stage.snake_type','=',$snakeid)->first(),
-        'nextstage' => Treatment::join('stage', 'treatmentRecord.nextstage', '=', 'stage.stagename')
-        ->where('stage.snake_type','=',$snakeid)->first(),
-
+        ->where('state.state_snakegroup','=',$snakegroup)
+        ->where('state.state_number','=',$state)->first(),
       );
       return View::make('page.management',$data);
     }
 
-    public function getOverview($treatmentid,$stage)
+    public function getOverview($treatmentid)
     {
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
@@ -75,10 +84,18 @@
 
     public function getBloodtest($treatmentid)
     {
+      $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+      ->where('record_id','=',$treatmentid)->first();
+      $snakegroup = $treatments->snake_group;
+      $state = $treatments->state;
+
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
+        ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+        ->join('state', 'snake.snake_group', '=', 'state.state_snakegroup')
         ->where('treatmentRecord.record_id','=',$treatmentid)
-        ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')->first(),
+        ->where('state.state_snakegroup','=',$snakegroup)
+        ->where('state.state_number','=',$state)->first(),
       );
       return View::make('page.bloodtest',$data);
     }
@@ -104,12 +121,20 @@
        return View::make('page.patienttable',$data);
     }
 
-    public function getFlowchart($recordid)
+    public function getFlowchart($treatmentid)
     {
+      $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+      ->where('record_id','=',$treatmentid)->first();
+      $snakegroup = $treatments->snake_group;
+      $state = $treatments->state;
+
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
         ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
-        ->where('treatmentRecord.record_id','=',$recordid)->first(),
+        ->join('state', 'snake.snake_group', '=', 'state.state_snakegroup')
+        ->where('treatmentRecord.record_id','=',$treatmentid)
+        ->where('state.state_snakegroup','=',$snakegroup)
+        ->where('state.state_number','=',$state)->first(),
       );
       return View::make('page.flowchart',$data);
 

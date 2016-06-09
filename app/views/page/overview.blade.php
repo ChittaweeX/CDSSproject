@@ -85,16 +85,16 @@
                     @foreach($bloodtestdata as $blood )
                       <tr>
                         <td>
-                          @if($blood->stage==0)
+                          @if($blood->state==0)
                             First Time
                           @endif
-                          @if($blood->stage==2)
+                          @if($blood->state==5)
                           Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time
                           @endif
-                          @if($blood->stage==3)
+                          @if($blood->state==2)
                           CBC,PT,INR,20 min WBCT q 6 hr for 2 time (6,12)
                           @endif
-                          @if($blood->stage==4)
+                          @if($blood->state==3)
                           D/C CBC,PT,INR,20 min WBCT,Creatinine Once daily for 3 days(24-36,48-60,72-84)
                           @endif
 
@@ -142,33 +142,34 @@
               <h3 class="panel-title"><strong>Motor weakness Check Record</strong></h3>
             </div>
             <div class="panel-body">
-              <table class='table  table-bordered'>
-                <thead>
-                  <th>State</th>
-                  <th>Muscle weakness</th>
-                  <th>Ptosis</th>
-                  <th>Dysarthria</th>
-                  <th>DateTime</th>
-                </thead>
-                <tbody>
-                  @foreach ($observedata as $ob)
-                    <tr>
-                      <td>
-                      @if ($ob->stageid == 1)
-                        Observe motor weakness q 1 hr for 24 hr
-                      @endif
-                      @if ($ob->stageid == 4)
-                        Observe motor weakness q 1 hr for 12 hr
-                      @endif</td>
-                      <td {{ $ob->Muscle_weakness == 1 ? 'class="text-danger"' : 'class="text-success"' }} >{{ $ob->Muscle_weakness == 1 ? 'Yes' : 'No' }}</td>
-                      <td {{ $ob->Ptosis == 1 ? 'class="text-danger"' : 'class="text-success"' }}>{{ $ob->Ptosis == 1 ? 'Yes' : 'No' }}</td>
-                      <td {{ $ob->Dysarthria == 1 ? 'class="text-danger"' : 'class="text-success"' }}>{{ $ob->Dysarthria == 1 ? 'Yes' : 'No' }}</td>
-                      <td >{{ $ob->created_at }}</td>
-                    </tr>
-                  @endforeach
-
-                </tbody>
-              </table>
+              <div class='table-responsive'>
+                <table class='table  table-bordered'>
+                  <thead>
+                    <th>State</th>
+                    <th>Muscle weakness</th>
+                    <th>Ptosis</th>
+                    <th>Dysarthria</th>
+                    <th>DateTime</th>
+                  </thead>
+                  <tbody>
+                    @foreach ($observedata as $ob)
+                      <tr>
+                        <td>
+                        @if ($ob->stateid == 1)
+                          Observe motor weakness q 1 hr for 24 hr
+                        @endif
+                        @if ($ob->stateid == 4)
+                          Observe motor weakness q 1 hr for 12 hr
+                        @endif</td>
+                        <td {{ $ob->Muscle_weakness == 1 ? 'class="text-danger"' : 'class="text-success"' }} >{{ $ob->Muscle_weakness == 1 ? 'Yes' : 'No' }}</td>
+                        <td {{ $ob->Ptosis == 1 ? 'class="text-danger"' : 'class="text-success"' }}>{{ $ob->Ptosis == 1 ? 'Yes' : 'No' }}</td>
+                        <td {{ $ob->Dysarthria == 1 ? 'class="text-danger"' : 'class="text-success"' }}>{{ $ob->Dysarthria == 1 ? 'Yes' : 'No' }}</td>
+                        <td >{{ $ob->created_at }}</td>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
             </div>
 
           </div>

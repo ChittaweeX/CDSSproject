@@ -21,14 +21,12 @@
         <div class="box">
           <form role="form" action="{{ url('function/confirmconsult') }}" method="post">
             <input type="hidden" name="treatmentid" value="{{ $patientdata->record_id }}">
-            <input type="hidden" name="status" value="1">
-            @if($patientdata->antivenom == '')
-              <input type="hidden" name="logtext" value="Consult Pc">
-              @elseif($patientdata->systemic_bleeding == 1)
-              <input type="hidden" name="logtext" value="{{ $patientdata->antivenom }}">
-              @else
-              <input type="hidden" name="logtext" value="Consult Pc">
+            @if (!empty($patientdata->state_consult))
+            <input type="hidden" name="logtext" value="{{$patientdata->state_give}}{{$patientdata->snake_name}}{{$patientdata->state_vials}} {{$patientdata->state_consult}}">
             @endif
+
+
+
 
           <div class="box-header with-border">
             <h3 class="box-title"><strong>Consult</strong></h3>
@@ -59,7 +57,7 @@
                       <hr>
                       <h3><strong>Snake Info</strong></h3>
                       <h3><strong>Snake type :</strong><span class="text-success">
-                        {{ $patientdata->snake_thai_name }}
+                        {{ $patientdata->snake_thai_name }} : {{ $patientdata->snake_name }}
                       </span></h3>
                       @if($patientdata->systemic_bleeding == 1)
                         <h2 class="text-danger animated infinite flash"><strong>Systemic bleeding</strong></h2>
@@ -116,10 +114,10 @@
                   <div class="col-sm-12">
                     <div class="panel panel-warning">
                       <div class="panel-heading">
-                        <h3 class="panel-title">How to manage</h3>
+                        <h3 class="panel-title">Infomation</h3>
                       </div>
                       @if ($patientdata->systemic_bleeding == 1 and $patientdata->respiratory_failure == 0 and $patientdata->motor_weakness == 0)
-                        @if ($patientdata->snake_type == 1 or $patientdata->snake_type == 2 or $patientdata->snake_type == 3)
+                        @if ($patientdata->snake_group == 1)
                           <div class="panel-body">
                             <h3><strong>Management for systemic bleeding from hematotoxic snake bite</strong></h3>
                             <hr>
@@ -132,17 +130,9 @@
                         @endif
                       @endif
                       @if ($patientdata->systemic_bleeding == 0 and $patientdata->respiratory_failure == 1 or $patientdata->motor_weakness == 1)
-                        @if ($patientdata->snake_type == 1 or $patientdata->snake_type == 2 or $patientdata->snake_type == 3)
+                        @if ($patientdata->snake_group == 1)
                           <div class="panel-body">
                             <h4>หากพบมีหนังตาตกหรือกล้ามเนื้ออ่อนแรง(อาจวินิจฉัยชนิดงูผิด)</h4>
-                          </div>
-                        @endif
-                      @endif
-
-                      @if ($patientdata->systemic_bleeding == 1 and $patientdata->respiratory_failure == 0 or $patientdata->motor_weakness == 0)
-                        @if ($patientdata->snake_type == 4 or $patientdata->snake_type == 5 or $patientdata->snake_type == 6 or $patientdata->snake_type == 7)
-                          <div class="panel-body">
-                            <h4>หากมี systemic bleeding (อาจวินิจฉัยชนิดงูผิด)</h4>
                           </div>
                         @endif
                       @endif
@@ -158,10 +148,9 @@
                       </div>
                       <div class="panel-body">
                         <h2 class="text-danger"><strong>
-                          @if($patientdata->antivenom == '')
-                            None
+                          @if (!empty($patientdata->state_consult))
+                          {{$patientdata->state_give}}{{$patientdata->snake_name}}{{$patientdata->state_vials}} {{$patientdata->state_consult}}
                           @endif
-                          {{ $patientdata->antivenom }}
                           </strong></h2>
                       </div>
                     </div>

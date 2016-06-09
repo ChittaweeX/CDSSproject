@@ -29,25 +29,9 @@
             <div class="col-sm-12">
               <h2>Patient : {{ $patientdata->patient_name }}</h2>
               <h2>Snake : {{ $patientdata->snake_thai_name }}</h2>
-              <h2>Test Stage : <span class="label label-warning">
-                @if($patientdata->stage == 1)
-                  Give Antivenom and Waiting Repeat Bloodtest
-                @endif
-                @if($patientdata->stage == 2)
-                  Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time
-                @endif
-                @if($patientdata->stage == 3)
-                  CBC,PT,INR,20 min WBCT q 6 hr for 2 time (6,12)
-                @endif
-                @if($patientdata->stage == 4)
-                  D/C CBC,PT,INR,20 min WBCT,Creatinine Once daily for 3 days(24-36,48-60,72-84)
-                @endif
-                @if($patientdata->stage == 5)
-                  Done
-                @endif
-                @if($patientdata->stage == 0)
-                  First Time Test
-                @endif</span></h2>
+              <hr>
+              <h2>State :
+                {{ $patientdata->state_repeat }}</h2>
               <hr>
             </div>
             <div class="col-sm-5">
