@@ -103,16 +103,10 @@
 
                    @endif
 
-                   @if ($pdata->snake_type == 4 or $pdata->snake_type == 5 or $pdata->snake_type == 6 or $pdata->snake_type == 7)
+                   @if ($pdata->snake_type == 4 or $pdata->snake_type == 5 or $pdata->snake_type == 6 or $pdata->snake_type == 7 )
 
                      @if($pdata->state == 1)
                       <strong>Observe motor weakness q 1 hr for 24 hr</strong>
-                     @endif
-                     @if($pdata->state == 2)
-                      <strong>Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time</strong>
-                     @endif
-                     @if($pdata->state == 3)
-                      <strong>CBC,PT,INR,20 min WBCT q 6 hr for 2 time (6,12)</strong>
                      @endif
                      @if($pdata->state == 4)
                        <strong>Observe motor weakness q 1 hr for 12 hr</strong>
@@ -125,6 +119,9 @@
                      @endif
                      @if($pdata->state == 7)
                       <strong>Wrong snake type</strong>
+                     @endif
+                     @if($pdata->state == 8)
+                      <strong>At 12 hr,any motor weakness</strong>
                      @endif
                      @if($pdata->state == 0)
                       <strong>Consult PC</strong>

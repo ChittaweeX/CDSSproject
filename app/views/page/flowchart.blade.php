@@ -29,11 +29,14 @@
 
           <div class="box-body">
             <div class="col-sm-12 text-center">
-              <h3 ></h3>
+              @if ($patientdata->snake_group == 2 or $patientdata->snake_group == 3)
+                <h3>Not Run!</h3>
+              @endif
+
               <div id="drawing"></div>
             </div>
           </div><!-- /.box-body -->
-          <div class="box-footer">
+          <div class="box-footer text-center">
             <div >
               <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary btn-lg">Back</button></a>
             </div>
@@ -52,6 +55,7 @@
 
 
 @section('customjs')
+
   @if($patientdata->snake_group == 1 and  $patientdata->state !==7 and $patientdata->state !==9 )
     <script>
   ///////////////////// start flow chart ////////////////////////////////////////////////////////////

@@ -155,8 +155,15 @@
                     @foreach ($observedata as $ob)
                       <tr>
                         <td>
-                        @if ($ob->state == 1)
+                          ({{$ob->state}})
+                        @if($ob->state == 1)
                           Observe motor weakness q 1 hr for 24 hr
+                        @endif
+                        @if($ob->state == 4)
+                          Observe motor weakness q 1 hr for 12 hr
+                        @endif
+                        @if($ob->state == 8)
+                          At 12 hr, any motor weakness
                         @endif
                         </td>
                         <td {{ $ob->Muscle_weakness == 1 ? 'class="text-danger"' : 'class="text-success"' }} >{{ $ob->Muscle_weakness == 1 ? 'Yes' : 'No' }}</td>
