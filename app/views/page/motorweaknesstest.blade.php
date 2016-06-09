@@ -26,14 +26,17 @@
             <h3 class="box-title "><strong>Motor weakness Check</strong></h3>
           </div>
 
-          <div class="box-body">
+          <div class="box-body text-center">
             <div class="col-sm-12">
-              <h2>Patient : {{ $patientdata->patient_name }}</h2>
+              <h2><strong>Patient :</strong>  {{ $patientdata->patient_name }}</h2>
+              <h2><strong>State :</strong> @if ($patientdata->state = 1)
+                Observe motor weakness q 1 hr for 24 hr
+              @endif</h2>
                 <div class="row">
                   <hr>
-                  <div class="col-md-3 col-md-offset-3">
+                  <div class="col-sm-12">
                     <div class="form-group">
-                      <label for="exampleInputEmail1"><h1>Muscle weakness</h1> </label>
+                      <label for="exampleInputEmail1"><h3><strong>Muscle weakness</strong></h3> </label>
                       <div class="form-group">
                         <div class='radio-inline'>
                           <label>
@@ -53,9 +56,9 @@
                 </div>
                 <div class="row">
                   <hr>
-                  <div class="col-md-3 col-md-offset-3">
+                  <div class="col-sm-12">
                     <div class="form-group">
-                      <label for="exampleInputEmail1"><h1>Ptosis weakness</h1></label>
+                      <label for="exampleInputEmail1"><h3><strong>Ptosis weakness</strong></h3></label>
                       <div class="form-group">
                         <div class='radio-inline'>
                           <label>
@@ -75,9 +78,9 @@
                 </div>
                 <div class="row">
                   <hr>
-                  <div class="col-md-3 col-md-offset-3">
+                  <div class="col-sm-12">
                     <div class="form-group">
-                      <label for="exampleInputEmail1"><h1>Dysarthria weakness</h1></label>
+                      <label for="exampleInputEmail1"><h3><strong>Dysarthria weakness</strong></h3></label>
                       <div class="form-group">
                         <div class='radio-inline'>
                           <label>

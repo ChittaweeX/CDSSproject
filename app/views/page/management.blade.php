@@ -63,11 +63,15 @@
                   <h2 class="panel-title"><strong>Management</strong></h2>
                 </div>
                 <div class="panel-body">
+                  @if ($patientdata->respiratory_failure == 1)
+                    <h2>Ventilation Support , Consult pc</h2>
+                  @endif
                   @if (!empty($patientdata->state_give))
                     <h2>{{$patientdata->state_give}} {{$patientdata->snake_name}}{{$patientdata->state_vials}}</h2>
                   @endif
                   <h2>{{$patientdata->state_repeat}}</h2>
-
+                  <h2>{{$patientdata->state_obseve}}</h2>
+                  <h2>{{$patientdata->state_done}}</h2>
                 </div>
               </div>
                 <button type='submit' class='btn btn-lg btn-success '>Save and Go to Patient Table</button>

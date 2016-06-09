@@ -30,7 +30,7 @@
                 <th >Name</th>
                 <th >Snake</th>
                 <th>Now State</th>
-                <th>Repeat</th>
+                <th>Next</th>
                 <th>Status</th>
                 <th>
                   Create At
@@ -117,13 +117,19 @@
                      @if($pdata->state == 5)
                       <strong>Done</strong>
                      @endif
+                     @if($pdata->state == 6)
+                      <strong>Consult PC</strong>
+                     @endif
+                     @if($pdata->state == 7)
+                      <strong>Wrong snake type</strong>
+                     @endif
                      @if($pdata->state == 0)
                       <strong>Consult PC</strong>
                      @endif
 
 
                    @endif
-
+                   ({{ $pdata->state }})
                  </td>
                  <td width="4%">
                    @if ($pdata->nextbloodtest != 0)
