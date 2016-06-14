@@ -72,37 +72,38 @@
                  <td>
                    @if ($pdata->snake_type == 1 or $pdata->snake_type == 2 or $pdata->snake_type == 3)
                      @if($pdata->state == 1)
-                      <strong>Give Antivenom and Waiting Repeat Bloodtest</strong>
+                      <strong>CBC,PT,INR, 20min WBCT,BUN,Creatinine,UA</strong>
                      @endif
                      @if($pdata->state == 2)
-                      <strong>Repeat CBC,PT,INR,20 min WBCT q 6 hr for 2 time
-                      <br>(6,12)</strong>
+                      <strong>CBC,PT,INR,20 min WBCT q 6 hr for 2 times (6,12) </strong>
                      @endif
                      @if($pdata->state == 3)
-                      <strong>D/C CBC,PT,INR,20 min WBCT,Creatinine
-                        <br>Once daily for 3 days (24-36,48-60,72-84)</strong>
+                      <strong>D/C CBC,PT,INR, 20 min WBCT, Creatinine
+                        <br>Once daily for 3 days(24-36,48-60,72-84)</strong>
                      @endif
                      @if($pdata->state == 4)
-                       <strong>Give Antivenom and Repeat blood test</strong>
+                      <strong>Antivenom</strong>
                      @endif
                      @if($pdata->state == 5)
-                      <strong>Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time</strong>
+                      <strong>Repeat CBC,PT,INR, 20 min WBCT q 4 hr for 3 time</strong>
                      @endif
                      @if($pdata->state == 6)
-                      <strong>Done</strong>
+                      <strong>Systemic bleeding</strong>
                      @endif
                      @if($pdata->state == 7)
-                      <strong>Consult PC</strong>
+                      <strong>Discordance of data</strong>
                      @endif
                      @if($pdata->state == 8)
-                      <strong>Wrong Snake type</strong>
+                      <strong>Chang Snake type</strong>
                      @endif
                      @if($pdata->state == 9)
-                      <strong>Consult PC</strong>
+                      <strong>Abnormal state</strong>
+                     @endif
+                     @if($pdata->state == 10)
+                      <strong>Done</strong>
                      @endif
 
                    @endif
-
                    @if ($pdata->snake_type == 4 or $pdata->snake_type == 5 or $pdata->snake_type == 6 or $pdata->snake_type == 7 )
 
                      @if($pdata->state == 1)
@@ -132,8 +133,10 @@
                    ({{ $pdata->state }})
                  </td>
                  <td width="4%">
-                   @if ($pdata->nextbloodtest != 0)
-                     <div data-countdown="{{ $pdata->nextbloodtest}}"></div>
+                   @if ($pdata->nextbloodtest == 0)
+                      None
+                     @else
+                      <div data-countdown="{{ $pdata->nextbloodtest}}"></div>
                    @endif
                  </td>
                  <td>

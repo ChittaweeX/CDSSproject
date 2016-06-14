@@ -1,11 +1,71 @@
 @extends('layout.main')
 @section('customcss')
+<style type="text/css">
+  .end-element { background-color : #FFCCFF; }
+</style>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://flowchart.js.org/flowchart-latest.js"></script>
+<script>
 
-      <script src="{{ url('assets/plugins/flowchart/jquery.scrollTo.min.js') }} "></script>
-      <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/1.0.1/svg.min.js"></script>
-      <script src="{{ url('assets/plugins/flowchart/flowsvg.min.js') }}"></script>
+    window.onload = function () {
+        var btn = document.getElementById("run"),
+            cd = document.getElementById("code"),
+            chart;
 
+        (btn.onclick = function () {
+            var code = cd.value;
+
+            if (chart) {
+              chart.clean();
+            }
+
+            chart = flowchart.parse(code);
+            chart.drawSVG('canvas', {
+              // 'x': 30,
+              // 'y': 50,
+              'line-width': 3,
+              'line-length': 50,
+              'text-margin': 10,
+              'font-size': 20,
+              'font': 'normal',
+              'font-family': 'Helvetica',
+              'font-weight': 'normal',
+              'font-color': 'black',
+              'line-color': 'black',
+              'element-color': 'black',
+              'fill': 'white',
+              'yes-text': 'yes',
+              'no-text': 'no',
+              'arrow-end': 'block',
+              'scale': 1,
+              'symbols': {
+                'start': {
+                  'font-color': 'red',
+                  'element-color': 'green',
+                  'fill': 'yellow'
+                },
+                'end':{
+                  'class': 'end-element'
+                }
+              },
+              'flowstate' : {
+                'past' : { 'fill' : '#FFFFF', 'font-size' : 12},
+                'current' : {'fill' : 'yellow', 'font-color' : 'red', 'font-weight' : 'bold'},
+                'future' : { 'fill' : '#FFFF99'},
+                'request' : { 'fill' : 'blue'},
+                'invalid': {'fill' : '#444444'},
+                'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
+                'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
+              }
+            });
+
+            $('[id^=sub1]').click(function(){
+              alert('info here');
+            });
+        })();
+
+    };
+</script>
 @endsection
 @section('pageheader')
   <!-- Content Header (Page header) -->
@@ -19,34 +79,44 @@
 @section('maincontent')
   <!-- Main content -->
   <section class="content">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="box">
+    <div><textarea id="code" style="width: 100%;" rows="11" hidden="">
+st=>operation: การดูแลผู้ป่วยถูกงู...กัด|past
+e=>end: Done|past
+op1=>operation: CBC,PT,INR, 20 min WBCT,BUN,Creatinine,UA|past
+op2=>operation: Stuff|current
+sub1=>subroutine: My Subroutine|invalid
+cond=>condition: Indication for antivenom|approved
+c2=>condition: Good idea|rejected
+io=>inputoutput: catch something...|request
 
-          <div class="box-header with-border">
-            <h3 class="box-title"><strong>Flowchart</strong></h3>
+st->op1->cond
+
+
+    </textarea></div>
+    <div><button id="run" type="button" hidden="">Run</button></div>
+
+    <div class="col-sm-12">
+      <div class="box">
+
+        <div class="box-header with-border">
+          <h3 class="box-title"><strong>Flowchart</strong></h3>
+        </div>
+
+        <div class="box-body">
+          <div class="col-sm-12 text-center">
+
+              <div id="canvas"></div>
+
           </div>
+        </div><!-- /.box-body -->
+        <div class="box-footer">
+          <div >
+            <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary btn-lg">Back</button></a>
+          </div>
+        </div><!-- /.box-footer-->
 
-          <div class="box-body">
-            <div class="col-sm-12 text-center">
-              @if ($patientdata->snake_group == 2 or $patientdata->snake_group == 3)
-                <h3>Not Run!</h3>
-              @endif
-
-              <div id="drawing"></div>
-            </div>
-          </div><!-- /.box-body -->
-          <div class="box-footer text-center">
-            <div >
-              <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary btn-lg">Back</button></a>
-            </div>
-          </div><!-- /.box-footer-->
-
-        </div><!-- /.box -->
-      </div>
+      </div><!-- /.box -->
     </div>
-
-
 
 
 
@@ -56,225 +126,4 @@
 
 @section('customjs')
 
-  @if($patientdata->snake_group == 1 and  $patientdata->state !==7 and $patientdata->state !==9 )
-    <script>
-  ///////////////////// start flow chart ////////////////////////////////////////////////////////////
-    flowSVG.draw(SVG('drawing').size(1000, 1500));
-    flowSVG.config({
-        interactive: false,
-        showButtons: false,
-        connectorStrokeWidth: 3,
-        connectorLength: 90,
-        defaultFontSize: 10,
-
-
-    });
-    flowSVG.shapes(
-      [
-        {
-        label: 'checkGreen1',
-        type: 'process',
-        text: [
-                'การดูแลผู้ป่วยถูก',
-                '{{$patientdata->snake_thai_name}}กัด',
-
-            ],
-
-        next: 'checkGreen11',
-
-      },
-      {
-      label: 'checkGreen11',
-      type: 'process',
-      text: [
-              'CBC,PT,INR, 20 min WBCT',
-              'BUN,Creatinine,UA',
-          ],
-            links: [
-              {
-                  text: '{{ $patientdata->state == 1 ? '****!!!CURRENT!!!****' : '' }}',
-                  url: '',
-                  target: ''
-              }
-          ],
-
-
-      next: 'indication1',
-    },
-        {
-  label: 'indication1',
-  type: 'decision',
-  text: [
-    'Indication for antivenom',
-  ],
-  yes: 'checkGreen4',
-  no: 'checkGreen2',
-
-  },
-  {
-  label: 'checkGreen2',
-  type: 'process',
-  text: [
-          'CBC,PT,INR, 20 min WBCT',
-          'Q 6 hr for 2 times (6,12)',
-
-      ],
-      links: [
-        {
-            text: '{{ $patientdata->state == 2 ? '****!!!CURRENT!!!****' : '' }}',
-            url: '',
-            target: ''
-        }
-    ],
-
-  next: 'indication2',
-  },
-  {
-  label: 'indication2',
-  type: 'decision',
-  text: [
-  'Indication for antivenom',
-  ],
-  yes: '',
-  no: 'checkGreen3'
-  },
-  {
-  label: 'checkGreen3',
-  type: 'process',
-  text: [
-          'D/C CBC,PT,INR,20minWBCT',
-          'Creatinine Once daily',
-          'for 3 day',
-          '(24-36,48-60,72-84)',
-      ],
-      links: [
-        {
-            text: '{{ $patientdata->state == 3 ? '****!!!CURRENT!!!****' : '' }}',
-            url: '',
-            target: ''
-        }
-    ],
-
-  next: 'indication3',
-  },
-  {
-  label: 'indication3',
-  type: 'decision',
-  text: [
-  'Indication for antivenom',
-  ],
-  yes: '',
-  no: 'canComply'
-  },
-  {
-      label: 'canComply',
-      type: 'finish',
-      text: [
-          'Done'
-
-      ],
-
-
-  },
-  {
-  label: 'checkGreen4',
-  type: 'process',
-  text: [
-          'Antivenom for Russell Viper 5 vials',
-          'BUN,Creatinine,UA',
-      ],
-  next: 'indication4',
-  },
-  {
-  label: 'indication4',
-  type: 'decision',
-  text: [
-  'Indication for antivenom',
-  ],
-  yes: 'canComply2',
-  no: ''
-  },
-  {
-      label: 'canComply2',
-      type: 'finish',
-      text: [
-          'Antivenom for',
-          'Russell Viper 5 vials',
-          'Consult PC',
-
-      ],
-
-
-  }
-
-
-      ]
-
-        );
-  </script>
-  @endif
-  @if($patientdata->snake_group == 1 and $patientdata->state==7 or $patientdata->state==8 or $patientdata->state==9)
-    <script>
-  ///////////////////// start flow chart ////////////////////////////////////////////////////////////
-    flowSVG.draw(SVG('drawing').size(900, 1200));
-    flowSVG.config({
-        interactive: false,
-        showButtons: false,
-        connectorLength: 80,
-        scrollto: true
-    });
-    flowSVG.shapes(
-      [
-        {
-        label: 'checkGreen2',
-        type: 'process',
-        text: [
-                'Consult PC',
-            ],
-        next: 'knowTypesnake',
-        },{
-  label: 'knowTypesnake',
-  type: 'decision',
-  text: [
-    'Know type of snake',
-  ],
-  yes: 'checkGreen',
-  no: ''
-  },
-  {
-  label: 'checkGreen',
-  type: 'decision',
-  text: [
-    'Which type?',
-  ],
-  yes: 'checkGreen2',
-  no: ''
-  },
-  {
-  label: 'checkGreen2',
-  type: 'process',
-  text: [
-          '{{ $patientdata->snake_name }}',
-          '{{$patientdata->state_give}} {{$patientdata->snake_name}}',
-          '{{$patientdata->state_vials}}',
-      ],
-  next: 'canComply',
-  },
-  {
-      label: 'canComply',
-      type: 'finish',
-      text: [
-          'ปรึกษาศูนย์พิษวิทยา โทร 1367'
-
-      ],
-
-
-  }
-
-
-      ]
-
-        );
-  </script>
-  @endif
 @endsection

@@ -21,13 +21,12 @@
         <div class="box">
           <form role="form" action="{{ url('function/confirmconsult') }}" method="post">
             <input type="hidden" name="treatmentid" value="{{ $patientdata->record_id }}">
-            @if (!empty($patientdata->state_consult))
-            <input type="hidden" name="logtext" value="{{$patientdata->state_give}}{{$patientdata->snake_name}}{{$patientdata->state_vials}} {{$patientdata->state_consult}}">
-            @endif
-
-
-
-
+            <input type="hidden" name="state" value="{{ $patientdata->state }}">
+            <input type="hidden" name="snaketype" value="{{ $patientdata->snake_type }}">
+            <input type="hidden" name="systemic_bleeding" value="{{ $patientdata->systemic_bleeding }}">
+            <input type="hidden" name="respiratory_failure" value="{{ $patientdata->respiratory_failure }}">
+            <input type="hidden" name="motor_weakness" value="{{ $patientdata->motor_weakness }}">
+            <input type="hidden" name="logtext" value="{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}} , Consult PC">
           <div class="box-header with-border">
             <h3 class="box-title"><strong>Consult</strong></h3>
           </div>
@@ -116,7 +115,7 @@
                       <div class="panel-heading">
                         <h3 class="panel-title">Infomation</h3>
                       </div>
-                      @if ($patientdata->systemic_bleeding == 1 and $patientdata->respiratory_failure == 0 and $patientdata->motor_weakness == 0)
+                      @if ($patientdata->systemic_bleeding == 1)
                         @if ($patientdata->snake_group == 1)
                           <div class="panel-body">
                             <h3><strong>Management for systemic bleeding from hematotoxic snake bite</strong></h3>
@@ -129,13 +128,6 @@
                           </div>
                         @endif
                       @endif
-                      @if ($patientdata->systemic_bleeding == 0 and $patientdata->respiratory_failure == 1 or $patientdata->motor_weakness == 1)
-                        @if ($patientdata->snake_group == 1)
-                          <div class="panel-body">
-                            <h4>หากพบมีหนังตาตกหรือกล้ามเนื้ออ่อนแรง(อาจวินิจฉัยชนิดงูผิด)</h4>
-                          </div>
-                        @endif
-                      @endif
                     </div>
                   </div>
 
@@ -144,12 +136,14 @@
                   <div class="col-sm-12">
                     <div class="panel panel-danger">
                       <div class="panel-heading">
-                        <h2 class="panel-title"><strong>Give antivenom</strong></h2>
+                        <h2 class="panel-title"><strong>Notification </strong></h2>
                       </div>
                       <div class="panel-body">
                         <h2 class="text-danger"><strong>
-                          @if (!empty($patientdata->state_consult))
-                          {{$patientdata->state_give}}{{$patientdata->snake_name}}{{$patientdata->state_vials}} {{$patientdata->state_consult}}
+                          @if ($patientdata->systemic_bleeding == 1)
+                            {{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials	}}
+                            @else
+                            {{$patientdata->state_text}}
                           @endif
                           </strong></h2>
                       </div>

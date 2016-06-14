@@ -18,13 +18,14 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="box">
-          <form role="form" action="{{ url('function/symptomcheck') }}" method="post">
+          <form role="form" action="{{ url('function/symptom') }}" method="post">
             <input type="hidden" name="treatmentid" value="{{ $treatmentdata->record_id }}">
           <div class="box-header with-border">
             <h3 class="box-title"><strong>Symptom Check</strong></h3>
           </div>
           <div class="box-body text-center">
             <div class="col-md-8 col-md-offset-2">
+              <hr>
               <h3><strong>Does the patient has systemic bleeding?</strong></h3>
                 <div class="row">
                   <div class="col-sm-12">

@@ -58,9 +58,8 @@
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-    <!-- jQuery 2.1.4 -->
-    <script src="{{ url('assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+
+
     <!-- Bootstrap 3.3.5 -->
     <script src="{{ url('assets/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- SlimScroll -->

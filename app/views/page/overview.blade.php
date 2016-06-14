@@ -85,8 +85,8 @@
                     @foreach($bloodtestdata as $blood )
                       <tr>
                         <td>
-                          @if($blood->state==0)
-                            First Time
+                          @if($blood->state==1)
+                            CBC,PT,INR, 20 min WBCT,BUN, Creatinine , UA
                           @endif
                           @if($blood->state==5)
                           Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time
@@ -185,13 +185,71 @@
               <h3 class="panel-title"><strong>Treatment Record</strong></h3>
             </div>
             <div class="panel-body">
-              @foreach($treatmentlog as $log)
-                - <strong> {{ $log->log_text }} </strong> | DateTime : {{ $log->created_at }}
-                <br>
-              @endforeach
+              <div class='table-responsive'>
+                <table class='table table-striped table-bordered table-hover table-condensed'>
+                  <thead>
+                    <tr>
+                      <th>Treatments log</th>
+                      <th>Snake</th>
+                      <th>systemic bleeding</th>
+                      <th>respiratory failure</th>
+                      <th>motor weakness</th>
+                      <th>DateTime</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      @foreach($treatmentlog as $log)
+                        <tr>
+                          <td>
+                            {{ $log->log_text }}
+                          </td>
+                          <td>
+                            @if ($log->snake_type==1)
+                              งูแมวเซา
+                            @endif
+                            @if ($log->snake_type==2)
+                              งูเขียวหางไหม้
+                            @endif
+                            @if ($log->snake_type==3)
+                              งูกะปะ
+                            @endif
+                            @if ($log->snake_type==4)
+                              งูเห่า
+                            @endif
+                            @if ($log->snake_type==5)
+                              งูจงอาง
+                            @endif
+                            @if ($log->snake_type==6)
+                              งูสามเหลี่ยม
+                            @endif
+                            @if ($log->snake_type==7)
+                              งูทับสมิงคลา
+                            @endif
+                            @if ($log->snake_type==8)
+                              งูไม่ทราบชนิด
+                            @endif
+
+                          </td>
+                          <td>
+                            {{ $log->systemic_bleeding == 1 ? 'Yes' : 'No' }}
+                          </td>
+                          <td>
+                            {{ $log->respiratory_failure == 1 ? 'Yes' : 'No' }}
+                          </td>
+                          <td>
+                            {{ $log->motor_weakness == 1 ? 'Yes' : 'No' }}
+                          </td>
+                          <td>
+                            {{ $log->created_at }}
+                          </td>
+                        </tr>
+                        @endforeach
+                  </tbody>
+                </table>
+              </div>
               <hr>
               @if(!empty($patientdata->consult_case))
-                <h3 class="text-danger"> Consult : {{ $patientdata->consult_case }}</h3>
+                <h3 class="text-danger"> Consult case : {{ $patientdata->consult_case }}</h3>
               @endif
             </div>
           </div>

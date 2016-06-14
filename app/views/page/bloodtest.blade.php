@@ -26,17 +26,16 @@
             </strong></h3>
           </div>
           <div class="box-body">
-            <div class="col-sm-12">
+            <div class="col-sm-12 text-center">
               <h2>Patient : {{ $patientdata->patient_name }}</h2>
               <h2>Snake : {{ $patientdata->snake_thai_name }}</h2>
               <hr>
               <h2>State :
-                {{ $patientdata->state_repeat }}</h2>
+                {{ $patientdata->state_text }}</h2>
               <hr>
             </div>
-            <div class="col-sm-5">
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-md-4 col-md-offset-4">
                     <div class="form-group">
                       <label for="exampleInputEmail1">INR</label>
                       <input type="text" class="form-control" autofocus="autofocus" name="INR" placeholder="" value="" >
@@ -45,7 +44,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-md-4 col-md-offset-4">
                     <div class="form-group">
                       <label for="exampleInputPassword1">20 min WBCT</label>
                       <select class="form-control" name="WBCT" required>
@@ -60,9 +59,10 @@
                   </div>
                 </div>
                 <hr>
-                <h3>CBC</h3>
+
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-md-4 col-md-offset-4">
+                    <h3>CBC</h3>
                     <div class="form-group">
                       <label for="exampleInputEmail1">WBC</label>
                       <input type="number" class="form-control" name="WBC" placeholder="" value="" >
@@ -70,7 +70,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-md-4 col-md-offset-4">
                     <div class="form-group">
                       <label for="exampleInputPassword1">Hct</label>
                       <input type="number" name="Hct" class="form-control" value="">
@@ -78,7 +78,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-md-4 col-md-offset-4">
                     <div class="form-group">
                       <label for="exampleInputPassword1">Platelet</label>
                       <input type="number" name="Platelet" class="form-control" value="">
@@ -86,9 +86,10 @@
                   </div>
                 </div>
                 <hr>
-                <h3>UA</h3>
+
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-md-4 col-md-offset-4">
+                    <h3>UA</h3>
                     <div class="form-group">
                       <label for="exampleInputPassword1">Blood</label>
                       <select class="form-control" name="Blood">
@@ -103,7 +104,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-md-4 col-md-offset-4">
                     <div class="form-group">
                       <label for="exampleInputPassword1">RBC</label>
                       <select class="form-control" name="RBC">
@@ -125,24 +126,25 @@
                       </select>
                     </div>
                   </div>
+                  <div class="col-md-4 col-md-offset-4">
+                    <div class="panel panel-info">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"> Note :</h3>
+                      </div>
+                      <div class="panel-body">
+                        หาก ร.พ.ไม่มี lab PT ,INR ให้ดูเพียง CBC และ 20-min WBCT
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-            </div>
-            <div class="col-sm-7">
-              <div class="panel panel-info">
-                <div class="panel-heading">
-                  <h3 class="panel-title"> Note :</h3>
-                </div>
-                <div class="panel-body">
-                  หาก ร.พ.ไม่มี lab PT ,INR ให้ดูเพียง CBC และ 20-min WBCT
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-12">
+
+
+            <div class="col-sm-12 text-center">
 
               <a href="{{ URL::previous() }}">
-              <button type="button" class="btn btn-primary btn-lg">Back</button></a>
-              <button type="submit" class="btn btn-success btn-lg">Save And Check</button>
+              <button type="button" class="btn btn-primary btn-lg btn-flat">Back</button></a>
+              <button type="submit" class="btn btn-success btn-lg btn-flat">Save And Check</button>
             </div>
           </div><!-- /.box-body -->
 

@@ -22,13 +22,18 @@
         <div class="box">
           <form role="form" action="{{ url('function/confirmmanagement') }}" method="post">
             <input type="hidden" name="treatmentid" value="{{ $patientdata->record_id }}">
-          @if (!empty($patientdata->state_give))
-            <input type="hidden" name="logtext" value="{{$patientdata->state_give}} {{$patientdata->snake_name}}{{$patientdata->state_vials}}">
+            <input type="hidden" name="state" value="{{ $patientdata->state }}">
+            <input type="hidden" name="snaketype" value="{{ $patientdata->snake_type }}">
+            <input type="hidden" name="systemic_bleeding" value="{{ $patientdata->systemic_bleeding }}">
+            <input type="hidden" name="respiratory_failure" value="{{ $patientdata->respiratory_failure }}">
+            <input type="hidden" name="motor_weakness" value="{{ $patientdata->motor_weakness }}">
+            @if ($patientdata->state == 1 or $patientdata->state == 2 or $patientdata->state == 3 or $patientdata->state == 5 )
+              <input type="hidden" name="logtext" value="BloodTest">
             @else
-            @if ($patientdata->snake_group == 1)
-              <input type="hidden" name="logtext" value="Blood Test">
+              <input type="hidden" name="logtext" value="{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}">
             @endif
-          @endif
+
+
 
 
           <div class="box-header with-border">
@@ -46,7 +51,7 @@
 
                     <h3><strong>Name :</strong> {{ $patientdata->patient_name }}</h3>
                     <hr>
-                    <h2><strong>Snake type</strong></h2>
+                    <h3><strong>Snake type :</strong></h3>
                     <h3 class="text-success">
                       {{ $patientdata->snake_thai_name }}
                       </h3>
@@ -63,15 +68,12 @@
                   <h2 class="panel-title"><strong>Management</strong></h2>
                 </div>
                 <div class="panel-body">
-                  @if ($patientdata->respiratory_failure == 1)
-                    <h2>Ventilation Support , Consult pc</h2>
+
+                  @if ($patientdata->state == 4)
+                    <h2>{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}</h2>
+                    @else
+                      <h2>{{$patientdata->state_text}}</h2>
                   @endif
-                  @if (!empty($patientdata->state_give))
-                    <h2>{{$patientdata->state_give}} {{$patientdata->snake_name}}{{$patientdata->state_vials}}</h2>
-                  @endif
-                  <h2>{{$patientdata->state_repeat}}</h2>
-                  <h2>{{$patientdata->state_obseve}}</h2>
-                  <h2>{{$patientdata->state_done}}</h2>
                 </div>
               </div>
                 <button type='submit' class='btn btn-lg btn-success '>Save and Go to Patient Table</button>
