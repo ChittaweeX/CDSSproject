@@ -39,7 +39,6 @@
                     <div class="form-group">
                       <label for="exampleInputEmail1">INR</label>
                       <input type="text" class="form-control" autofocus="autofocus" name="INR" placeholder="" value="" >
-                      <p class="help-block">Default < 1.2 </p>
                     </div>
                   </div>
                 </div>

@@ -153,7 +153,7 @@
                  <td>
                    {{ $pdata->created_at }}
                  </td>
-                 <td ><a href="{{ url("page/overview/$pdata->record_id/$pdata->state") }}" data-toggle="tooltip" data-placement="bottom" title="Overview">
+                 <td ><a href="{{ url("page/overview/$pdata->record_id") }}" data-toggle="tooltip" data-placement="bottom" title="Overview">
                    <button type="button" class="btn btn-sm btn-info btn-flat">
                      <i class="fa fa-file-text-o"></i>
                    </button></a>

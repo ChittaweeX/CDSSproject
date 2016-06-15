@@ -123,18 +123,10 @@
 
     public function getFlowchart($treatmentid)
     {
-      $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
-      ->where('record_id','=',$treatmentid)->first();
-      $snakegroup = $treatments->snake_group;
-      $state = $treatments->state;
-
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
         ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
-        ->join('state', 'snake.snake_group', '=', 'state.state_snakegroup')
-        ->where('treatmentRecord.record_id','=',$treatmentid)
-        ->where('state.state_snakegroup','=',$snakegroup)
-        ->where('state.state_number','=',$state)->first(),
+        ->where('treatmentRecord.record_id','=',$treatmentid)->first(),
       );
       return View::make('page.flowchart',$data);
 

@@ -99,7 +99,7 @@
                           @endif
 
                         </td>
-                        <td {{ ($blood->INR > 1.20 ? 'class="text-danger"': 'class="text-success"') }}>
+                        <td {{ ($blood->INR >= 1.20 ? 'class="text-danger"': 'class="text-success"') }}>
                           {{ $blood->INR ==0 ? '' : $blood->INR }}
                         </td>
                         <td {{ ($blood->WBCT == 0 ? 'class="text-danger"': 'class="text-success"') }}>

@@ -120,15 +120,15 @@
       $treatmentid = $treatments->record_id;
       $log = Treatmentlog::where('record_id','=',$treatmentid)->first();
       //// SNAKE GROUP 1 Hematotoxic /////////////
-      if ($treatments->snake_group == 1) {
-        if (is_object($log)) {
-          if ($log->snake_type != $treatments->snake_type) {
-            $treatments->state = 8;
-            $treatments->status = 1;
-            $treatments->save();
-            return Redirect::to("page/consult/$treatmentid");
-          }
+      if (is_object($log)) {
+        if ($log->snake_type != $treatments->snake_type) {
+          $treatments->state = 8;
+          $treatments->status = 1;
+          $treatments->save();
+          return Redirect::to("page/consult/$treatmentid");
         }
+      }
+      if ($treatments->snake_group == 1) {
         if ($treatments->systemic_bleeding == 1 ){
             $treatments->state = 6;
             $treatments->status = 1;
@@ -200,7 +200,7 @@
 
       if ($treatments->snake_group == 1) {
         if ($treatments->state == 1){
-          if ($Platelet < 100000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
+          if ($Platelet < 100000 or $INR >= 1.2 or $bloodtest->WBCT == 0) {
             $treatments->state = 4;
             $treatments->staterepeat = 0 ;
             $treatments->save();
@@ -219,7 +219,7 @@
         }
 
         if ($treatments->state == 2){
-          if ($Platelet < 100000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
+          if ($Platelet < 100000 or $INR >= 1.2 or $bloodtest->WBCT == 0) {
             $treatments->state = 4;
             $treatments->status = 2;
             $treatments->staterepeat = 0 ;
@@ -231,7 +231,7 @@
             if ($repeattime == 1) {
               $treatments->state = 3;
               $treatments->staterepeat = 0 ;
-              $treatments->nextbloodtest = date("Y/m/d H:i:s", mktime(date("H")+0, date("i")+0, date("s")+0, date("m")+0  , date("d")+1, date("Y")+0));
+              $treatments->nextbloodtest = 0;
               $treatments->save();
               $bloodtest->state = 2;
               $bloodtest->save();
@@ -248,7 +248,7 @@
         }
 
         if ($treatments->state == 3){
-          if ($Platelet < 100000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
+          if ($Platelet < 100000 or $INR >= 1.2 or $bloodtest->WBCT == 0) {
             $treatmentlog = Treatmentlog::where('record_id','=',$treatmentid)
             ->where('state','=','4')
             ->first();
@@ -292,8 +292,8 @@
         }
 
         if ($treatments->state == 5){
-          if ($Platelet < 100000 or $INR > 1.2 or $bloodtest->WBCT == 0) {
-            $treatments->state = 9;
+          if ($Platelet < 100000 or $INR >= 1.2 or $bloodtest->WBCT == 0) {
+            $treatments->state = 6;
             $treatments->status = 1;
             $treatments->staterepeat = 0 ;
             $treatments->save();
@@ -304,7 +304,7 @@
             if ($repeattime == 2) {
               $treatments->state = 3;
               $treatments->staterepeat = 0 ;
-              $treatments->nextbloodtest = date("Y/m/d H:i:s", mktime(date("H")+6, date("i")+0, date("s")+0, date("m")+0  , date("d")+1, date("Y")+0));
+              $treatments->nextbloodtest = 0;
               $treatments->save();
               $bloodtest->state = 5;
               $bloodtest->save();

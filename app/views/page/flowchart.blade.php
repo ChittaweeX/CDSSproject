@@ -24,7 +24,7 @@
               // 'x': 30,
               // 'y': 50,
               'line-width': 3,
-              'line-length': 50,
+              'line-length': 80,
               'text-margin': 10,
               'font-size': 20,
               'font': 'normal',
@@ -49,12 +49,12 @@
                 }
               },
               'flowstate' : {
-                'past' : { 'fill' : '#FFFFF', 'font-size' : 12},
-                'current' : {'fill' : 'yellow', 'font-color' : 'red', 'font-weight' : 'bold'},
+                'past' : { 'fill' : '#5cb85c', 'font-size' : 12},
+                'current' : {'fill' : '#f0ad4e', 'font-size' : 12, },
                 'future' : { 'fill' : '#FFFF99'},
                 'request' : { 'fill' : 'blue'},
                 'invalid': {'fill' : '#444444'},
-                'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
+                'approved' : { 'fill' : '#428bca', 'font-size' : 12, 'yes-text' : 'Y', 'no-text' : 'N'  },
                 'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
               }
             });
@@ -80,17 +80,32 @@
   <!-- Main content -->
   <section class="content">
     <div><textarea id="code" style="width: 100%;" rows="11" hidden="">
-st=>operation: การดูแลผู้ป่วยถูกงู...กัด|past
-e=>end: Done|past
-op1=>operation: CBC,PT,INR, 20 min WBCT,BUN,Creatinine,UA|past
-op2=>operation: Stuff|current
-sub1=>subroutine: My Subroutine|invalid
-cond=>condition: Indication for antivenom|approved
-c2=>condition: Good idea|rejected
-io=>inputoutput: catch something...|request
-
-st->op1->cond
-
+st=>operation: การดูแลผู้ป่วยถูกงู{{$patientdata->snake_thai_name}}กัด|past
+e=>operation: Done|{{$patientdata->state == 10 ? 'current':'past'}}
+op1=>operation: CBC,PT,INR, 20 min WBCT,BUN,Creatinine,UA|{{$patientdata->state == 1 ? 'current':'past'}}
+op2=>operation: CBC,PT,INR, 20 min WBCT q 6 hr for 2 times(6,12)|{{$patientdata->state == 2 ? 'current':'past'}}
+op3=>operation: Antivenom for {{$patientdata->snake_name}} 5 vials
+Repeat CBC,PT,INR, 20 min WBCT q 4 hr for 3 times|{{$patientdata->state == 5 ? 'current':'past'}}
+op4=>operation: D/C CBC,PT,INR,20 min WBCT,Creatinine
+Once daily for 3 day (24-36,48-60,72-84)|{{$patientdata->state == 3 ? 'current':'past'}}
+op5=>operation: Antivenom for {{$patientdata->snake_name}} 5 vials
+Consult PC|{{$patientdata->state == 6 ? 'current':'past'}}
+cond1=>condition: Indication for antivenom|approved
+cond2=>condition: Indication for antivenom|approved
+cond3=>condition: Indication for antivenom|approved
+cond4=>condition: Indication for antivenom|approved
+st->op1->cond1
+cond1(yes,right)->op3
+cond1(no)->op2
+op2->cond2
+cond2(yes,right)->op3
+cond2(no)->op4
+op3->cond4
+cond4(yes)->op5
+cond4(no)->op4
+op4->cond3
+cond3(yes,right)->op3
+cond3(no)->e
 
     </textarea></div>
     <div><button id="run" type="button" hidden="">Run</button></div>

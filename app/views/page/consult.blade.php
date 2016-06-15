@@ -78,7 +78,7 @@
                              <option value="Data discordance" >
                                Data discordance
                              </option>
-                             <option value="Emergency case">
+                             <option value="Emergency case" {{$patientdata->state == 6 ? 'selected' : '' }}>
                                Emergency case
                              </option>
                            </select>
