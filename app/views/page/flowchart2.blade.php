@@ -24,7 +24,7 @@
               // 'x': 30,
               // 'y': 50,
               'line-width': 2,
-              'line-length': 100,
+              'line-length': 40,
               'text-margin': 10,
               'font-size': 20,
               'font': 'normal',
@@ -108,25 +108,26 @@ cond1=>condition: Known
 type of
 snake|approved
 
-cond2=>operation: Which
-type ?|past
+cond2=>condition: Malayan Pit Viper ?|approved
 
-cond3=>operation: Which
-type ?|past
+cond3=>condition: Green Pit Viper ?|approved
 
-cond4=>operation: Which
-type ?|approved
+cond4=>condition: Russell Viper ?|approved
 
 
 
 st->op1->cond1
-cond1(yes,right)->op4
-cond1(no)->op2
-op4->op5
-op5->op6
-op6->op3
+cond1(yes)->op2
+cond1(no)->cond2
+cond2(yes)->op4
+cond2(no)->cond3
+cond3(yes)->op5
+cond3(no)->cond4
+cond4(yes)->op6
+op4->op3
 op2->op3
-
+op5->op3
+op6->op3
     </textarea></div>
     <div><button id="run" type="button" hidden="">Run</button></div>
 
@@ -138,11 +139,14 @@ op2->op3
         </div>
 
         <div class="box-body">
-          <div class="col-sm-12 text-center">
+          <div class='table-responsive'>
+            <div class="col-sm-12 text-center">
 
-              <div id="canvas"></div>
+                <div id="canvas"></div>
 
+            </div>
           </div>
+
         </div><!-- /.box-body -->
         <div class="box-footer">
           <div >

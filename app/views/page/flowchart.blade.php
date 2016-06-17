@@ -92,7 +92,7 @@ op5=>operation: @if ($patientdata->state == 6)
   (Systemic bleeding)
 @endif
 @if ($patientdata->state == 11)
-  Antivenom for {{$patientdata->snake_name}} 5 vials
+  Emergency case
 @endif
 @if ($patientdata->state == 7)
   Discordance of data
@@ -140,7 +140,7 @@ cond3(no)->e
         </div><!-- /.box-body -->
         <div class="box-footer">
           <div >
-            <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary btn-lg">Back</button></a>
+            <a href="{{ url('page/patienttable') }}"><button type="button" class="btn btn-primary btn-lg">Back</button></a>
           </div>
         </div><!-- /.box-footer-->
 

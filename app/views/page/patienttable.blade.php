@@ -103,10 +103,10 @@
                       <strong>Done</strong>
                      @endif
                      @if($pdata->state == 11)
-                      <strong>Give antivenom and Consult PC</strong>
+                      <strong>Consult PC</strong>
                      @endif
                    @endif
-                  
+
 
                  </td>
                  <td width="4%">

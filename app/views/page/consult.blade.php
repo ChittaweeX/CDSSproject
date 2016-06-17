@@ -78,7 +78,7 @@
                              <option value="Data discordance" >
                                Data discordance
                              </option>
-                             <option value="Emergency case" {{$patientdata->state == 6 || $patientdata->state == 11  ? 'selected' : '' }}>
+                             <option value="Emergency case" {{$patientdata->state == 6 || $patientdata->state == 11 || $patientdata->state == 9 ? 'selected' : '' }}>
                                Emergency case
                              </option>
                            </select>
@@ -143,7 +143,7 @@
                           @if ($patientdata->systemic_bleeding == 1)
                             {{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials	}}
                           @elseif($patientdata->state==11)
-                            {{$patientdata->state_text}}{{$patientdata->snake_name}} {{$patientdata->state_vials	}}
+                            {{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials	}}
                             @else
                               {{$patientdata->state_text}}
                           @endif
