@@ -23,8 +23,8 @@
             chart.drawSVG('canvas', {
               // 'x': 30,
               // 'y': 50,
-              'line-width': 3,
-              'line-length': 80,
+              'line-width': 2,
+              'line-length': 100,
               'text-margin': 10,
               'font-size': 20,
               'font': 'normal',
@@ -80,46 +80,52 @@
   <!-- Main content -->
   <section class="content">
     <div><textarea id="code" style="width: 100%;" rows="11" hidden="">
-st=>operation: การดูแลผู้ป่วยถูก{{$patientdata->snake_thai_name}}กัด|past
-e=>operation: Done|{{$patientdata->state == 10 ? 'current':'past'}}
-op1=>operation: CBC,PT,INR, 20 min WBCT,BUN,Creatinine,UA|{{$patientdata->state == 1 ? 'current':'past'}}
-op2=>operation: CBC,PT,INR, 20 min WBCT q 6 hr for 2 times(6,12)|{{$patientdata->state == 2 ? 'current':'past'}}
-op3=>operation: Antivenom for {{$patientdata->snake_name}} 5 vials
-Repeat CBC,PT,INR, 20 min WBCT q 4 hr for 3 times|{{$patientdata->state == 5 ? 'current':'past'}}
-op4=>operation: D/C CBC,PT,INR,20 min WBCT,Creatinine
-Once daily for 3 day (24-36,48-60,72-84)|{{$patientdata->state == 3 ? 'current':'past'}}
-op5=>operation: @if ($patientdata->state == 6)
-  (Systemic bleeding)
-@endif
-@if ($patientdata->state == 11)
-  Antivenom for {{$patientdata->snake_name}} 5 vials
-@endif
-@if ($patientdata->state == 7)
-  Discordance of data
-@endif
-@if ($patientdata->state == 8)
-  Chang Snake type
-@endif
-Consult PC|{{$patientdata->state == 6 || $patientdata->state == 11 || $patientdata->state == 7 || $patientdata->state == 8 || $patientdata->state == 9 ? 'current':'past'}}
-@if ($patientdata->state == 6)
-:>{{url("page/flowchart2/$patientdata->record_id")}}
-@endif
-cond1=>condition: Indication for antivenom|approved
-cond2=>condition: Indication for antivenom|approved
-cond3=>condition: Indication for antivenom|approved
-cond4=>condition: Indication for antivenom|approved
+st=>operation: Management for systemic bleeding from hematotoxic snake bite|past
+e=>operation: Done|past
+
+op1=>operation: 1.Resuscitation
+2.Give antivenom ไม่ต้องรอผล lab
+3.Check CBC,PT,INR,20 min WBCT,Creatinine
+4.G/M blood component และให้ตามความเหมาะสม โดยเริ่มหลังจากให้ antivenom
+5.ปรึกษาศูนย์พิษวิทยา โทร 1367|past
+
+op2=>operation: Give Polyvalent
+Hematotoxic Snake
+antivenom 5 vials|past
+
+op3=>operation: ปรึกษาศุนย์พิษวิทยา โทร 1367|current
+
+op4=>operation: Give Malayan Pit
+Viper antivenom 5 vials|{{$patientdata->snake_type == 3 ? 'current':'past'}}
+
+op5=>operation: Give Green Pit
+Viper antivenom 5 vials|{{$patientdata->snake_type == 2 ? 'current':'past'}}
+
+op6=>operation: Give Russell
+Viper antivenom 5 vials|{{$patientdata->snake_type == 1 ? 'current':'past'}}
+
+cond1=>condition: Known
+type of
+snake|approved
+
+cond2=>operation: Which
+type ?|past
+
+cond3=>operation: Which
+type ?|past
+
+cond4=>operation: Which
+type ?|approved
+
+
+
 st->op1->cond1
-cond1(yes,right)->op3
+cond1(yes,right)->op4
 cond1(no)->op2
-op2->cond2
-cond2(yes,right)->op3
-cond2(no)->op4
-op3->cond4
-cond4(yes)->op5
-cond4(no)->op4
-op4->cond3
-cond3(yes,right)->op3
-cond3(no)->e
+op4->op5
+op5->op6
+op6->op3
+op2->op3
 
     </textarea></div>
     <div><button id="run" type="button" hidden="">Run</button></div>

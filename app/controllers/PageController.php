@@ -132,6 +132,17 @@
 
     }
 
+    public function getFlowchart2($treatmentid)
+    {
+      $data = array(
+        'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
+        ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+        ->where('treatmentRecord.record_id','=',$treatmentid)->first(),
+      );
+      return View::make('page.flowchart2',$data);
+
+    }
+
   }
 
 

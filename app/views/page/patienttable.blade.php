@@ -29,7 +29,7 @@
                 <th>National id </th>
                 <th >Name</th>
                 <th >Snake</th>
-                <th>Now State</th>
+                <th>Current State</th>
                 <th>Next</th>
                 <th>Status</th>
                 <th>
@@ -75,17 +75,17 @@
                       <strong>CBC,PT,INR, 20min WBCT,BUN,Creatinine,UA</strong>
                      @endif
                      @if($pdata->state == 2)
-                      <strong>CBC,PT,INR,20 min WBCT q 6 hr for 2 times (6,12) </strong>
+                      <strong>CBC,PT,INR,20 min WBCT q 6 hr for 2 times (6,12) ({{$pdata->staterepeat}})/2</strong>
                      @endif
                      @if($pdata->state == 3)
                       <strong>D/C CBC,PT,INR, 20 min WBCT, Creatinine
-                        <br>Once daily for 3 days(24-36,48-60,72-84)</strong>
+                        <br>Once daily for 3 days(24-36,48-60,72-84) ({{$pdata->staterepeat}}/3)</strong>
                      @endif
                      @if($pdata->state == 4)
                       <strong>Antivenom</strong>
                      @endif
                      @if($pdata->state == 5)
-                      <strong>Repeat CBC,PT,INR, 20 min WBCT q 4 hr for 3 time</strong>
+                      <strong>Repeat CBC,PT,INR, 20 min WBCT q 4 hr for 3 time ({{$pdata->staterepeat}}/3)</strong>
                      @endif
                      @if($pdata->state == 6)
                       <strong>Systemic bleeding</strong>
@@ -102,35 +102,12 @@
                      @if($pdata->state == 10)
                       <strong>Done</strong>
                      @endif
-
+                     @if($pdata->state == 11)
+                      <strong>Give antivenom and Consult PC</strong>
+                     @endif
                    @endif
-                   @if ($pdata->snake_type == 4 or $pdata->snake_type == 5 or $pdata->snake_type == 6 or $pdata->snake_type == 7 )
+                  
 
-                     @if($pdata->state == 1)
-                      <strong>Observe motor weakness q 1 hr for 24 hr</strong>
-                     @endif
-                     @if($pdata->state == 4)
-                       <strong>Observe motor weakness q 1 hr for 12 hr</strong>
-                     @endif
-                     @if($pdata->state == 5)
-                      <strong>Done</strong>
-                     @endif
-                     @if($pdata->state == 6)
-                      <strong>Consult PC</strong>
-                     @endif
-                     @if($pdata->state == 7)
-                      <strong>Wrong snake type</strong>
-                     @endif
-                     @if($pdata->state == 8)
-                      <strong>At 12 hr,any motor weakness</strong>
-                     @endif
-                     @if($pdata->state == 0)
-                      <strong>Consult PC</strong>
-                     @endif
-
-
-                   @endif
-                   ({{ $pdata->state }})
                  </td>
                  <td width="4%">
                    @if ($pdata->nextbloodtest == 0)

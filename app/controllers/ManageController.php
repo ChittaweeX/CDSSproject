@@ -293,7 +293,7 @@
 
         if ($treatments->state == 5){
           if ($Platelet < 100000 or $INR >= 1.2 or $bloodtest->WBCT == 0) {
-            $treatments->state = 6;
+            $treatments->state = 11;
             $treatments->status = 1;
             $treatments->staterepeat = 0 ;
             $treatments->save();
