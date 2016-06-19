@@ -51,9 +51,7 @@
                 @if($patientdata->respiratory_failure == 1)
                   <h2 class="text-danger"><strong>Respiratory failure</strong></h2>
                 @endif
-                @if($patientdata->motor_weakness == 1)
-                  <h2 class="text-danger"><strong>Motor Weakness</strong></h2>
-                @endif
+
 
 
               </div>
@@ -146,29 +144,29 @@
                 <table class='table  table-bordered'>
                   <thead>
                     <th>State</th>
-                    <th>Muscle weakness</th>
-                    <th>Ptosis</th>
-                    <th>Dysarthria</th>
+                    <th>motor weakness</th>
+                    <th>Progression of weakness</th>
                     <th>DateTime</th>
                   </thead>
                   <tbody>
                     @foreach ($observedata as $ob)
                       <tr>
                         <td>
-                          ({{$ob->state}})
-                        @if($ob->state == 1)
+                          @if($ob->state == 0)
+                          Give antivenom
+                          @endif
+                          @if($ob->state == 1)
                           Observe motor weakness q 1 hr for 24 hr
-                        @endif
-                        @if($ob->state == 4)
+                          @endif
+                          @if($ob->state == 4)
                           Observe motor weakness q 1 hr for 12 hr
-                        @endif
-                        @if($ob->state == 8)
-                          At 12 hr, any motor weakness
+                          @endif
+                        @if($ob->state == 3)
+                          Give antivenom
                         @endif
                         </td>
                         <td {{ $ob->Muscle_weakness == 1 ? 'class="text-danger"' : 'class="text-success"' }} >{{ $ob->Muscle_weakness == 1 ? 'Yes' : 'No' }}</td>
-                        <td {{ $ob->Ptosis == 1 ? 'class="text-danger"' : 'class="text-success"' }}>{{ $ob->Ptosis == 1 ? 'Yes' : 'No' }}</td>
-                        <td {{ $ob->Dysarthria == 1 ? 'class="text-danger"' : 'class="text-success"' }}>{{ $ob->Dysarthria == 1 ? 'Yes' : 'No' }}</td>
+                        <td {{ $ob->progression_weakness == 1 ? 'class="text-danger"' : 'class="text-success"' }}>{{ $ob->progression_weakness == 1 ? 'Yes' : 'No' }}</td>
                         <td >{{ $ob->created_at }}</td>
                       </tr>
                     @endforeach

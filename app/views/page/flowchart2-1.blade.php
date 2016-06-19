@@ -81,46 +81,38 @@
   <section class="content">
     <div><textarea id="code" style="width: 100%;" rows="11" hidden="">
 st=>operation: การดูแลผู้ป่วยถูก{{$patientdata->snake_thai_name}}กัด|past
-e=>operation: Done|{{$patientdata->state == 10 ? 'current':'past'}}
-op1=>operation: CBC,PT,INR, 20 min WBCT,BUN,Creatinine,UA|{{$patientdata->state == 1 ? 'current':'past'}}
-op2=>operation: CBC,PT,INR, 20 min WBCT q 6 hr for 2 times(6,12)|{{$patientdata->state == 2 ? 'current':'past'}}
-op3=>operation: Antivenom for {{$patientdata->snake_name}} 5 vials
-Repeat CBC,PT,INR, 20 min WBCT q 4 hr for 3 times|{{$patientdata->state == 5 ? 'current':'past'}}
-op4=>operation: D/C CBC,PT,INR,20 min WBCT,Creatinine
-Once daily for 3 day (24-36,48-60,72-84)|{{$patientdata->state == 3 ? 'current':'past'}}
-op5=>operation: @if ($patientdata->state == 6)
-  (Systemic bleeding)
-@endif
-@if ($patientdata->state == 11)
-  Emergency case
-@endif
-@if ($patientdata->state == 7)
+e=>operation: Done|{{$patientdata->state == 6 ? 'current':'past'}}
+op1=>operation: Observe motor weakness q 1 hr for 24 hr|{{$patientdata->state == 1 ? 'current':'past'}}
+op2=>operation: Intubation and ventilation support
+(Consult PC)|{{$patientdata->state == 2 ? 'current':'past'}}
+op3=>operation: Antivenom for {{$patientdata->snake_name}} 10 vials
+Observe motor weakness q 1 hr for 12 hr|{{$patientdata->state == 4 ? 'current':'past'}}
+op4=>operation: 
+@if ($patientdata->state == 9)
   Discordance of data
 @endif
 @if ($patientdata->state == 8)
   Chang Snake type
 @endif
-Consult PC|{{$patientdata->state == 6 || $patientdata->state == 11 || $patientdata->state == 7 || $patientdata->state == 8 || $patientdata->state == 9 ? 'current':'past'}}
+Consult PC|{{$patientdata->state == 5 || $patientdata->state == 8 || $patientdata->state == 9  ? 'current':'past'}}
 @if ($patientdata->state == 6)
 :>{{url("page/flowchart2/$patientdata->record_id")}}
 @endif
-cond1=>condition: Indication for antivenom|approved
-cond2=>condition: Indication for antivenom|approved
-cond3=>condition: Indication for antivenom|approved
-cond4=>condition: Indication for antivenom|approved
+cond1=>condition: Impending respiratory
+failure|approved
+cond2=>condition: Any motor weakness|approved
+cond3=>condition: Progression of weakness|approved
+cond4=>condition: At 12 hr, any motor
+weakness|approved
 st->op1->cond1
-cond1(yes,right)->op3
-cond1(no)->op2
-op2->cond2
-cond2(yes,right)->op3
-cond2(no)->op4
-op3->cond4
-cond4(yes)->op5
-cond4(no)->op4
-op4->cond3
-cond3(yes,right)->op3
-cond3(no)->e
-
+cond1(yes,right)->op2->op3->cond3
+cond1(no)->cond2
+cond3(yes,right)->op4
+cond3(no)->cond4
+cond4(yes,right)->op4
+cond4(no)->e
+cond2(yes)->op3
+cond2(no)->e
     </textarea></div>
     <div><button id="run" type="button" hidden="">Run</button></div>
 
@@ -133,8 +125,10 @@ cond3(no)->e
 
         <div class="box-body">
           <div class="col-sm-12 text-center">
+           <div class='table-responsive'>
+             <div id="canvas"></div>
+           </div>
 
-              <div id="canvas"></div>
 
           </div>
         </div><!-- /.box-body -->

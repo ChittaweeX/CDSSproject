@@ -64,9 +64,6 @@
                       @if($patientdata->respiratory_failure == 1)
                         <h2 class="text-danger animated infinite flash"><strong>Respiratory failure</strong></h2>
                       @endif
-                      @if($patientdata->motor_weakness == 1)
-                        <h2 class="text-danger animated infinite flash"><strong>Motor Weakness</strong></h2>
-                      @endif
                     </div>
                   </div>
                   <div class="panel-footer">
@@ -78,8 +75,13 @@
                              <option value="Data discordance" >
                                Data discordance
                              </option>
-                             <option value="Emergency case" {{$patientdata->state == 6 || $patientdata->state == 11 || $patientdata->state == 9 ? 'selected' : '' }}>
-                               Emergency case
+                             <option value="Emergency case" @if ($patientdata->snake_group == 1)
+                               {{$patientdata->state == 6 || $patientdata->state == 11 || $patientdata->state == 9 ? 'selected' : '' }}
+                             @endif
+                             @if ($patientdata->snake_group == 2)
+                               {{$patientdata->state == 5 || $patientdata->state == 2 || $patientdata->state == 7  ? 'selected' : '' }}
+                             @endif>
+                                Emergency case
                              </option>
                            </select>
                           <br>
@@ -145,13 +147,29 @@
                           @elseif($patientdata->state==11)
                             {{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials	}}
                             @else
-                              {{$patientdata->state_text}}
+                            {{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials	}}
                           @endif
                           </strong></h2>
                       </div>
                     </div>
                   </div>
                 </div>
+                @if ($patientdata->snake_group == 2 and $patientdata->state == 7)
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="panel panel-info">
+                        <div class="panel-heading">
+                          <h2 class="panel-title"><strong>Next management </strong></h2>
+                        </div>
+                        <div class="panel-body">
+                          <h2 class="text-info"><strong>
+                            Observe motor weakness q 1 hr for 12 hr
+                            </strong></h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                @endif
                 <div class="row">
                   <div class="col-sm-12">
                     <a href="{{ url("page/symptom/$patientdata->record_id") }}"><button type="button" class="btn btn-primary btn-lg btn-flat">

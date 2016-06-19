@@ -44,30 +44,7 @@
                  <td>{{ $pdata->patient_national_id }}</td>
                  <td width="10%">{{ $pdata->patient_name }}</td>
                  <td >
-                   @if ($pdata->snake_type==1)
-                     งูแมวเซา
-                   @endif
-                   @if ($pdata->snake_type==2)
-                     งูเขียวหางไหม้
-                   @endif
-                   @if ($pdata->snake_type==3)
-                     งูกะปะ
-                   @endif
-                   @if ($pdata->snake_type==4)
-                     งูเห่า
-                   @endif
-                   @if ($pdata->snake_type==5)
-                     งูจงอาง
-                   @endif
-                   @if ($pdata->snake_type==6)
-                     งูสามเหลี่ยม
-                   @endif
-                   @if ($pdata->snake_type==7)
-                     งูทับสมิงคลา
-                   @endif
-                   @if ($pdata->snake_type==8)
-                     งูไม่ทราบชนิด
-                   @endif
+                  {{$pdata->snake_thai_name}}
                  </td>
                  <td>
                    @if ($pdata->snake_type == 1 or $pdata->snake_type == 2 or $pdata->snake_type == 3)
@@ -75,7 +52,7 @@
                       <strong>CBC,PT,INR, 20min WBCT,BUN,Creatinine,UA</strong>
                      @endif
                      @if($pdata->state == 2)
-                      <strong>CBC,PT,INR,20 min WBCT q 6 hr for 2 times (6,12) ({{$pdata->staterepeat}})/2</strong>
+                      <strong>CBC,PT,INR,20 min WBCT q 6 hr for 2 times (6,12) ({{$pdata->staterepeat}}/2)</strong>
                      @endif
                      @if($pdata->state == 3)
                       <strong>D/C CBC,PT,INR, 20 min WBCT, Creatinine
@@ -103,10 +80,30 @@
                       <strong>Done</strong>
                      @endif
                      @if($pdata->state == 11)
-                      <strong>Consult PC</strong>
+                      <strong>Abnormal state</strong>
                      @endif
                    @endif
+                   @if ($pdata->snake_type == 4 or $pdata->snake_type == 5 or $pdata->snake_type == 6 or $pdata->snake_type == 7)
+                     @if($pdata->state == 1)
+                      <strong>Observe motor weakness q 1 hr for 24 hr ({{$pdata->staterepeat}}/24)</strong>
+                     @endif
+                     @if($pdata->state == 4)
+                      <strong>Observe motor weakness q 1 h for 12 hr ({{$pdata->staterepeat}}/12)</strong>
+                     @endif
+                     @if($pdata->state == 5)
+                      <strong>Consult PC</strong>
+                     @endif
+                     @if($pdata->state == 6)
+                      <strong>Done</strong>
+                     @endif
+                     @if($pdata->state == 8)
+                      <strong>Chang Snake type</strong>
+                     @endif
+                     @if($pdata->state == 9)
+                      <strong>Discordance of data</strong>
+                     @endif
 
+                   @endif
 
                  </td>
                  <td width="4%">

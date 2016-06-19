@@ -115,6 +115,7 @@
     {
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
+        ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
         ->orderBy('treatmentRecord.created_at','desc')->get(),
         'datenow' => date('Y/m/d')
       );
@@ -123,24 +124,37 @@
 
     public function getFlowchart($treatmentid)
     {
+      $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+      ->where('record_id','=',$treatmentid)->first();
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
         ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
         ->where('treatmentRecord.record_id','=',$treatmentid)->first(),
       );
-      return View::make('page.flowchart',$data);
+      if ($treatments->snake_group == 1) {
+        return View::make('page.flowchart1-1',$data);
+      }
+      if ($treatments->snake_group == 2) {
+        return View::make('page.flowchart2-1',$data);
+      }
 
     }
 
     public function getFlowchart2($treatmentid)
     {
+      $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+      ->where('record_id','=',$treatmentid)->first();
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
         ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
         ->where('treatmentRecord.record_id','=',$treatmentid)->first(),
       );
-      return View::make('page.flowchart2',$data);
-
+      if ($treatments->snake_group == 1) {
+      return View::make('page.flowchart1-2',$data);
+      }
+      if ($treatments->snake_group == 2) {
+      return View::make('page.flowchart2-2',$data);
+      }
     }
 
   }

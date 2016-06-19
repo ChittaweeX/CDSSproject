@@ -27,12 +27,21 @@
             <input type="hidden" name="systemic_bleeding" value="{{ $patientdata->systemic_bleeding }}">
             <input type="hidden" name="respiratory_failure" value="{{ $patientdata->respiratory_failure }}">
             <input type="hidden" name="motor_weakness" value="{{ $patientdata->motor_weakness }}">
-            @if ($patientdata->state == 1 or $patientdata->state == 2 or $patientdata->state == 3 or $patientdata->state == 5 )
-              <input type="hidden" name="logtext" value="BloodTest">
-            @else
-              <input type="hidden" name="logtext" value="{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}">
+            @if ($patientdata->snake_group == 1)
+              @if ($patientdata->state == 1 or $patientdata->state == 2 or $patientdata->state == 3 or $patientdata->state == 5 )
+                  <input type="hidden" name="logtext" value="BloodTest">
+              @else
+                <input type="hidden" name="logtext" value="{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}">
+              @endif
             @endif
 
+            @if ($patientdata->snake_group == 2)
+              @if ($patientdata->state == 1 or $patientdata->state == 4  )
+                  <input type="hidden" name="logtext" value="Observe">
+              @else
+                <input type="hidden" name="logtext" value="{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}">
+              @endif
+            @endif
 
 
 
@@ -68,12 +77,22 @@
                   <h2 class="panel-title"><strong>Management</strong></h2>
                 </div>
                 <div class="panel-body">
-
-                  @if ($patientdata->state == 4)
-                    <h2>{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}</h2>
-                    @else
-                      <h2>{{$patientdata->state_text}}</h2>
+                  @if ($patientdata->snake_group == 1)
+                    @if ($patientdata->state == 4)
+                      <h2>{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}</h2>
+                      @else
+                        <h2>{{$patientdata->state_text}}</h2>
+                    @endif
                   @endif
+
+                  @if ($patientdata->snake_group == 2)
+                    @if ($patientdata->state == 3)
+                      <h2>{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}</h2>
+                      @else
+                        <h2>{{$patientdata->state_text}}</h2>
+                    @endif
+                  @endif
+
                 </div>
               </div>
                 <button type='submit' class='btn btn-lg btn-success '>Save and Go to Patient Table</button>

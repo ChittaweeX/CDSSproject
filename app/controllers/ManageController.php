@@ -106,6 +106,7 @@
         $treatments->systemic_bleeding = $inputs['systemicB'];
         $treatments->respiratory_failure = $inputs['respiratoryF'];
         $treatments->motor_weakness = $inputs['motorweakness'];
+        $treatments->progression_weakness = $inputs['progressionweakness'];
         $treatments->snake_type = $inputs['snaketype'];
         $treatments->save();
         $treatmentid = $id;
@@ -120,15 +121,15 @@
       $treatmentid = $treatments->record_id;
       $log = Treatmentlog::where('record_id','=',$treatmentid)->first();
       //// SNAKE GROUP 1 Hematotoxic /////////////
-      if (is_object($log)) {
-        if ($log->snake_type != $treatments->snake_type) {
-          $treatments->state = 8;
-          $treatments->status = 1;
-          $treatments->save();
-          return Redirect::to("page/consult/$treatmentid");
-        }
-      }
       if ($treatments->snake_group == 1) {
+        if (is_object($log)) {
+          if ($log->snake_type != $treatments->snake_type) {
+            $treatments->state = 8;
+            $treatments->status = 1;
+            $treatments->save();
+            return Redirect::to("page/consult/$treatmentid");
+          }
+        }
         if ($treatments->systemic_bleeding == 1 ){
             $treatments->state = 6;
             $treatments->status = 1;
@@ -154,6 +155,43 @@
           }
         }
 
+        //// SNAKE GROUP 2  /////////////
+        if ($treatments->snake_group == 2) {
+          if (is_object($log)){
+            if ($log->snake_type != $treatments->snake_type) {
+              $treatments->state = 8;
+              $treatments->status = 1;
+              $treatments->save();
+              return Redirect::to("page/consult/$treatmentid");
+            }
+          }
+          if ($treatments->systemic_bleeding == 1 ){
+              $treatments->state = 9;
+              $treatments->status = 1;
+              $treatments->save();
+              return Redirect::to("page/consult/$treatmentid");
+            }elseif ($treatments->respiratory_failure == 1 ) {
+              $treatments->state = 7;
+              $treatments->status = 1;
+              $treatments->save();
+              return Redirect::to("page/consult/$treatmentid");
+            }else{
+              if (!is_object($log)) {
+                if ($treatments->snake_type == 4 or $treatments->snake_type == 5) {
+                    $treatments->state = 1;
+                }else{ // snake 6 - 7
+                    $treatments->state = 3;
+                }
+
+              }
+              $treatments->status = 4;
+              $treatments->save();
+              $motorweakness = $treatments->motor_weakness;
+              $progressionweakness = $treatments->progression_weakness;
+              $state = $treatments->state;
+              return $this->observeRecord($treatmentid,$motorweakness,$progressionweakness,$state);
+            }
+          }
 
     }
 
@@ -324,39 +362,34 @@
 
     }
 
-    public function postObserverecord()
+    public function observeRecord($treatmentid,$motorweakness,$progressionweakness,$state)
     {
-      $inputs =  Input::all();
-      $id = $inputs['treatmentid'];
+      $log = Treatmentlog::where('record_id','=',$treatmentid)->first();
       $observe = new Observe();
-      $observe->record_id = $id;
-      $observe->Muscle_weakness = $inputs['muscle_weakness'];
-      $observe->Ptosis = $inputs['ptosis_weakness'];
-      $observe->Dysarthria = $inputs['dysarthria_weakness'];
+      $observe->record_id = $treatmentid;
+      if (!is_object($log)) {
+        $observe->state = 0;
+      }else{
+        $observe->state = $state;
+      }
+      $observe->Muscle_weakness = $motorweakness;
+      $observe->progression_weakness = $progressionweakness;
       $observe->save();
       $observeid = $observe->ob_id;
       $treatmentid = $observe->record_id;
-     return Redirect::to("function/observecheck/$observeid/$treatmentid");
+     return $this->observeCheck($observeid,$treatmentid);
     }
 
 
-    public function getObservecheck($observeid,$treatmentid)
+    public function observeCheck($observeid,$treatmentid)
     {
       $observe = Observe::where('ob_id','=',$observeid)->first();
       $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
       ->where('record_id','=',$treatmentid)->first();
       $repeattime = $treatments->staterepeat;
-
-
-      if ($treatments->snake_group == 2 or $treatments->snake_group == 3){
+      if ($treatments->snake_group == 2){
         if ($treatments->state == 1){
-          if ($treatments->respiratory_failure== 1 and $observe->Muscle_weakness == 1 or $observe->Ptosis == 1 or $observe->Dysarthria== 1) {
-              $treatments->state = 2;
-              $treatments->status = 4;
-              $treatments->staterepeat = 0 ;
-              $treatments->save();
-              return Redirect::to("page/management/$treatmentid");
-            }elseif($observe->Muscle_weakness == 1 or $observe->Ptosis == 1 or $observe->Dysarthria== 1){
+          if ($observe->Muscle_weakness == 1 or $observe->progression_weakness == 1){
               $treatments->state = 3;
               $treatments->status = 4;
               $treatments->staterepeat = 0 ;
@@ -364,7 +397,7 @@
               return Redirect::to("page/management/$treatmentid");
             }else {
               if ($repeattime == 23) {
-                $treatments->state = 5;
+                $treatments->state = 6;
                 $treatments->status = 3;
                 $treatments->staterepeat = 0 ;
                 $treatments->nextbloodtest = 0;
@@ -384,23 +417,21 @@
             }
           }
           if ($treatments->state == 4){
-            if ($observe->Muscle_weakness == 1 or $observe->Ptosis == 1 or $observe->Dysarthria== 1) {
-              if ($treatments->respiratory_failure== 1) {
-                $treatments->state = 6;
-              }else {
-                  $treatments->state = 6;
-              }
-              $treatments->status = 1;
-              $treatments->save();
-              return Redirect::to("page/consult/$treatmentid");
+            if ($observe->Muscle_weakness == 1 or $observe->progression_weakness == 1){
+                $treatments->state = 5;
+                $treatments->status = 1;
+                $treatments->staterepeat = 0 ;
+                $treatments->nextbloodtest = 0 ;
+                $treatments->save();
+                return Redirect::to("page/consult/$treatmentid");
               }else {
                 if ($repeattime == 11) {
-                  $treatments->state = 8;
-                  $treatments->status = 4;
+                  $treatments->state = 6;
+                  $treatments->status = 3;
                   $treatments->staterepeat = 0 ;
-                  $treatments->nextbloodtest = date("Y/m/d H:i:s", mktime(date("H")+12, date("i")+0, date("s")+0, date("m")+0  , date("d")+0, date("Y")+0));
+                  $treatments->nextbloodtest = 0;
                   $treatments->save();
-                  $observe->state = 4;
+                  $observe->state = 1;
                   $observe->save();
                   return Redirect::to("page/management/$treatmentid");
                 }else {
@@ -408,34 +439,21 @@
                   $treatments->status = 4;
                   $treatments->nextbloodtest = date("Y/m/d H:i:s", mktime(date("H")+1, date("i")+0, date("s")+0, date("m")+0  , date("d")+0, date("Y")+0));
                   $treatments->save();
-                  $observe->state = 1;
+                  $observe->state = 4;
                   $observe->save();
                   return Redirect::to("page/management/$treatmentid");
                 }
               }
             }
-            if ($treatments->state == 8){
-              if ($treatments->respiratory_failure== 1 and $observe->Muscle_weakness == 1 or $observe->Ptosis == 1 or $observe->Dysarthria== 1) {
-                $treatments->state = 7;
-                $treatments->status = 1;
-                $treatments->save();
-                return Redirect::to("page/consult/$treatmentid");
-                }elseif($observe->Muscle_weakness == 1 or $observe->Ptosis == 1 or $observe->Dysarthria== 1){
-                  $treatments->state = 7;
-                  $treatments->status = 1;
+          if ($treatments->state == 3){
+                  $treatments->status = 4;
+                  $treatments->staterepeat = 0 ;
+                  $treatments->nextbloodtest = 0;
                   $treatments->save();
-                  return Redirect::to("page/consult/$treatmentid");
-                }else{
-                    $treatments->state = 5;
-                    $treatments->status = 3;
-                    $treatments->staterepeat = 0 ;
-                    $treatments->nextbloodtest = 0;
-                    $treatments->save();
-                    $observe->state = 8;
-                    $observe->save();
-                    return Redirect::to("page/management/$treatmentid");
-                }
-              }
+                  $observe->state = 3;
+                  $observe->save();
+                  return Redirect::to("page/management/$treatmentid");
+          }
         }
       }
 
@@ -446,22 +464,53 @@
     {
       $inputs = Input::all();
       $id = $inputs['treatmentid'];
-      $treatments = Treatment::where('record_id','=',$id)->first();
-      $treatments->consult_case = $inputs['consult'];
-      $treatments->nextbloodtest = 0;
-      $treatments->status = 1;
-      $treatments->save();
+      $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
+      ->where('record_id','=',$id)->first();
+      if ($treatments->snake_group == 1) {
+        $treatments->consult_case = $inputs['consult'];
+        $treatments->nextbloodtest = 0;
+        $treatments->status = 1;
+        $treatments->save();
 
-      $treatmentslog = new Treatmentlog();
-      $treatmentslog->record_id = $id;
-      $treatmentslog->state = $inputs['state'];
-      $treatmentslog->log_text = $inputs['logtext'];
-      $treatmentslog->snake_type = $inputs['snaketype'];
-      $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
-      $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
-      $treatmentslog->motor_weakness = $inputs['motor_weakness'];
-      $treatmentslog->save();
-      return Redirect::to('page/patienttable');
+        $treatmentslog = new Treatmentlog();
+        $treatmentslog->record_id = $id;
+        $treatmentslog->state = $inputs['state'];
+        $treatmentslog->log_text = $inputs['logtext'];
+        $treatmentslog->snake_type = $inputs['snaketype'];
+        $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
+        $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
+        $treatmentslog->motor_weakness = $inputs['motor_weakness'];
+        $treatmentslog->save();
+        return Redirect::to('page/patienttable');
+      }
+
+      if ($treatments->snake_group == 2) {
+        if ($treatments->state == 7 or $treatments->state == 2) {
+          $treatments->state = 4;
+          $treatments->respiratory_failure = 0;
+          $treatments->staterepeat = 0;
+          $treatments->nextbloodtest = date("Y/m/d H:i:s", mktime(date("H")+1, date("i")+0, date("s")+0, date("m")+0  , date("d")+0, date("Y")+0));
+          $treatments->status = 4;
+          $treatments->save();
+        }else{
+          $treatments->consult_case = $inputs['consult'];
+          $treatments->nextbloodtest = 0;
+          $treatments->status = 1;
+          $treatments->save();
+        }
+        $treatmentslog = new Treatmentlog();
+        $treatmentslog->record_id = $id;
+        $treatmentslog->state = $inputs['state'];
+        $treatmentslog->log_text = $inputs['logtext'];
+        $treatmentslog->snake_type = $inputs['snaketype'];
+        $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
+        $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
+        $treatmentslog->motor_weakness = $inputs['motor_weakness'];
+        $treatmentslog->save();
+        return Redirect::to('page/patienttable');
+      }
+
+
     }
     public function postConfirmmanagement()
     {
@@ -469,36 +518,71 @@
       $id = $inputs['treatmentid'];
       $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
       ->where('record_id','=',$id)->first();
-      if ($treatments->state == 4) {
-        $treatmentslog = new Treatmentlog();
-        $treatmentslog->record_id = $id;
-        $treatmentslog->state = $inputs['state'];
-        $treatmentslog->log_text = $inputs['logtext'];
-        $treatmentslog->snake_type = $inputs['snaketype'];
-        $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
-        $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
-        $treatmentslog->motor_weakness = $inputs['motor_weakness'];
-        $treatmentslog->save();
+      if ($treatments->snake_group == 1) {
+        if ($treatments->state == 4) {
+          $treatmentslog = new Treatmentlog();
+          $treatmentslog->record_id = $id;
+          $treatmentslog->state = $inputs['state'];
+          $treatmentslog->log_text = $inputs['logtext'];
+          $treatmentslog->snake_type = $inputs['snaketype'];
+          $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
+          $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
+          $treatmentslog->motor_weakness = $inputs['motor_weakness'];
+          $treatmentslog->save();
 
-        $treatments->state = 5;
-        $treatments->status = 2;
-        $treatments->nextbloodtest = date("Y/m/d H:i:s", mktime(date("H")+4, date("i")+0, date("s")+0, date("m")+0  , date("d")+0, date("Y")+0));
-        $treatments->save();
-        return Redirect::to("page/management/$id");
+          $treatments->state = 5;
+          $treatments->status = 2;
+          $treatments->nextbloodtest = date("Y/m/d H:i:s", mktime(date("H")+4, date("i")+0, date("s")+0, date("m")+0  , date("d")+0, date("Y")+0));
+          $treatments->save();
+          return Redirect::to("page/management/$id");
 
-      }elseif($treatments->state == 5 and $treatments->staterepeat== 0) {
-        return Redirect::to('page/patienttable');
-      }else {
-        $treatmentslog = new Treatmentlog();
-        $treatmentslog->record_id = $id;
-        $treatmentslog->state = $inputs['state'];
-        $treatmentslog->log_text = $inputs['logtext'];
-        $treatmentslog->snake_type = $inputs['snaketype'];
-        $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
-        $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
-        $treatmentslog->motor_weakness = $inputs['motor_weakness'];
-        $treatmentslog->save();
-        return Redirect::to('page/patienttable');
+        }elseif($treatments->state == 5 and $treatments->staterepeat== 0) {
+          return Redirect::to('page/patienttable');
+        }else {
+          $treatmentslog = new Treatmentlog();
+          $treatmentslog->record_id = $id;
+          $treatmentslog->state = $inputs['state'];
+          $treatmentslog->log_text = $inputs['logtext'];
+          $treatmentslog->snake_type = $inputs['snaketype'];
+          $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
+          $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
+          $treatmentslog->motor_weakness = $inputs['motor_weakness'];
+          $treatmentslog->save();
+          return Redirect::to('page/patienttable');
+        }
+      }
+
+      if ($treatments->snake_group == 2) {
+        if ($treatments->state == 3) {
+          $treatmentslog = new Treatmentlog();
+          $treatmentslog->record_id = $id;
+          $treatmentslog->state = $inputs['state'];
+          $treatmentslog->log_text = $inputs['logtext'];
+          $treatmentslog->snake_type = $inputs['snaketype'];
+          $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
+          $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
+          $treatmentslog->motor_weakness = $inputs['motor_weakness'];
+          $treatmentslog->save();
+
+          $treatments->state = 4;
+          $treatments->status = 4;
+          $treatments->nextbloodtest = date("Y/m/d H:i:s", mktime(date("H")+1, date("i")+0, date("s")+0, date("m")+0  , date("d")+0, date("Y")+0));
+          $treatments->save();
+          return Redirect::to("page/management/$id");
+        }elseif($treatments->state == 4 and $treatments->staterepeat== 0) {
+          return Redirect::to('page/patienttable');
+        }else {
+          $treatmentslog = new Treatmentlog();
+          $treatmentslog->record_id = $id;
+          $treatmentslog->state = $inputs['state'];
+          $treatmentslog->log_text = $inputs['logtext'];
+          $treatmentslog->snake_type = $inputs['snaketype'];
+          $treatmentslog->systemic_bleeding = $inputs['systemic_bleeding'];
+          $treatmentslog->respiratory_failure = $inputs['respiratory_failure'];
+          $treatmentslog->motor_weakness = $inputs['motor_weakness'];
+          $treatmentslog->save();
+          return Redirect::to('page/patienttable');
+        }
       }
 
 
