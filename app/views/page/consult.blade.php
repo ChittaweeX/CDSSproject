@@ -80,6 +80,9 @@
                              @endif
                              @if ($patientdata->snake_group == 2)
                                {{$patientdata->state == 5 || $patientdata->state == 2 || $patientdata->state == 7 || $patientdata->state == 10 ? 'selected' : '' }}
+                             @endif
+                             @if ($patientdata->snake_group == 3)
+                               {{$patientdata->snake_group == 3 ? 'selected' : '' }}
                              @endif>
                                 Emergency case
                              </option>
@@ -118,7 +121,7 @@
                         <h3 class="panel-title">Infomation</h3>
                       </div>
                       @if ($patientdata->systemic_bleeding == 1)
-                        @if ($patientdata->snake_group == 1)
+                        @if ($patientdata->snake_group == 1 || $patientdata->snake_group == 3)
                           <div class="panel-body">
                             <h3><strong>Management for systemic bleeding from hematotoxic snake bite</strong></h3>
                             <hr>

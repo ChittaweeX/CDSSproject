@@ -105,7 +105,11 @@
                      @if($pdata->state == 10)
                       <strong>Consult PC</strong>
                      @endif
-
+                   @endif
+                   @if ($pdata->snake_type == 8)
+                     @if($pdata->state == 1)
+                      <strong>Consult PC</strong>
+                     @endif
                    @endif
 
                  </td>

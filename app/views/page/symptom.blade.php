@@ -86,28 +86,33 @@
                     </div>
                   </div>
                 </div>
-                @if ($treatmentdata->snake_type == 4 or $treatmentdata->snake_type == 5 or $treatmentdata->snake_type == 6 or $treatmentdata->snake_type == 7 )
-                  <h3><strong>Does the patient have Progression of Weakness?</strong></h3>
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="form-group">
-                        <div class='radio-inline'>
-                          <label>
-                            <input type='radio' name='progressionweakness' value='1' required {{ $treatmentdata->progression_weakness == 1 ? 'checked' : '' }}>
-                            <h1>Yes</h1>
-                          </label>
-                        </div>
-                        <div class='radio-inline'>
-                          <label>
-                            <input type='radio' name='progressionweakness' value='0'  {{ $treatmentdata->progression_weakness == 0 ? 'checked' : '' }}>
-                            <h1>No</h1>
-                          </label>
+                @if($treatmentdata->snake_type == 4 or $treatmentdata->snake_type == 5 or $treatmentdata->snake_type == 6 or $treatmentdata->snake_type == 7)
+                  @if ($treatmentdata->state == 4)
+                    <h3><strong>Does the patient have Progression of Weakness?</strong></h3>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <div class='radio-inline'>
+                            <label>
+                              <input type='radio' name='progressionweakness' value='1' required {{ $treatmentdata->progression_weakness == 1 ? 'checked' : '' }}>
+                              <h1>Yes</h1>
+                            </label>
+                          </div>
+                          <div class='radio-inline'>
+                            <label>
+                              <input type='radio' name='progressionweakness' value='0'  {{ $treatmentdata->progression_weakness == 0 ? 'checked' : '' }}>
+                              <h1>No</h1>
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                @else
+                  @else
+                    <input type="hidden" name="progressionweakness" value="0">
+                  @endif
+                  @else
                   <input type="hidden" name="progressionweakness" value="0">
+
                 @endif
 
                 <hr>

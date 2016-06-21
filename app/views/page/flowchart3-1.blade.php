@@ -23,8 +23,8 @@
             chart.drawSVG('canvas', {
               // 'x': 30,
               // 'y': 50,
-              'line-width': 3,
-              'line-length': 80,
+              'line-width': 2,
+              'line-length': 40,
               'text-margin': 10,
               'font-size': 20,
               'font': 'normal',
@@ -80,34 +80,54 @@
   <!-- Main content -->
   <section class="content">
     <div><textarea id="code" style="width: 100%;" rows="11" hidden="">
-st=>operation: การดูแลผู้ป่วยถูก{{$patientdata->snake_thai_name}}กัด|past
-e=>operation: Done|{{$patientdata->state == 6 ? 'current':'past'}}
-op1=>operation: Observe motor weakness q 1 hr for 24 hr|{{$patientdata->state == 1 ? 'current':'past'}}
-op2=>operation: Intubation and ventilation support
-(Consult PC)|{{$patientdata->state == 2 ? 'current':'past'}}
-op3=>operation: Antivenom for {{$patientdata->snake_name}} 10 vials
-Observe motor weakness q 1 hr for 12 hr|{{$patientdata->state == 4 ? 'current':'past'}}
-op4=>operation: Consult PC|{{$patientdata->state == 5 || $patientdata->state == 8 || $patientdata->state == 9 || $patientdata->state == 10  ? 'current':'past'}}
-@if ($patientdata->state == 6)
-:>{{url("page/flowchart2/$patientdata->record_id")}}
-@endif
-cond1=>condition: Impending respiratory
-failure|approved
-cond2=>condition: Any motor weakness|approved
-cond3=>condition: Progression of weakness|approved
-cond4=>condition: At 12 hr, any motor
-weakness|approved
+st=>operation: Management for systemic bleeding from hematotoxic snake bite|past
+e=>operation: Done|past
+
+op1=>operation: 1.Resuscitation
+2.Give antivenom ไม่ต้องรอผล lab
+3.Check CBC,PT,INR,20 min WBCT,Creatinine
+4.G/M blood component และให้ตามความเหมาะสม โดยเริ่มหลังจากให้ antivenom
+5.ปรึกษาศูนย์พิษวิทยา โทร 1367|past
+
+op2=>operation: Give Polyvalent
+Hematotoxic Snake
+antivenom 5 vials|{{$patientdata->snake_type == 8 ? 'current':'past'}}
+
+op3=>operation: ปรึกษาศุนย์พิษวิทยา โทร 1367|current
+
+op4=>operation: Give Malayan Pit
+Viper antivenom 5 vials|{{$patientdata->snake_type == 3 ? 'current':'past'}}
+
+op5=>operation: Give Green Pit
+Viper antivenom 5 vials|{{$patientdata->snake_type == 2 ? 'current':'past'}}
+
+op6=>operation: Give Russell
+Viper antivenom 5 vials|{{$patientdata->snake_type == 1 ? 'current':'past'}}
+
+cond1=>condition: Known
+type of
+snake|approved
+
+cond2=>condition: Malayan Pit Viper ?|approved
+
+cond3=>condition: Green Pit Viper ?|approved
+
+cond4=>condition: Russell Viper ?|approved
+
+
 
 st->op1->cond1
-cond1(yes,right)->op2->op3->cond3
+cond1(yes)->op2
 cond1(no)->cond2
-cond3(yes,right)->op4
+cond2(yes)->op4
+cond2(no)->cond3
+cond3(yes)->op5
 cond3(no)->cond4
-cond4(yes,right)->op4
-cond4(no)->e
-cond2(yes)->op3
-cond2(no)->e
-
+cond4(yes)->op6
+op4->op3
+op2->op3
+op5->op3
+op6->op3
     </textarea></div>
     <div><button id="run" type="button" hidden="">Run</button></div>
 
@@ -119,17 +139,18 @@ cond2(no)->e
         </div>
 
         <div class="box-body">
-          <div class="col-sm-12 text-center">
-           <div class='table-responsive'>
-             <div id="canvas"></div>
-           </div>
+          <div class='table-responsive'>
+            <div class="col-sm-12 text-center">
 
+                <div id="canvas"></div>
 
+            </div>
           </div>
+
         </div><!-- /.box-body -->
         <div class="box-footer">
           <div >
-            <a href="{{ url('page/patienttable') }}"><button type="button" class="btn btn-primary btn-lg">Back</button></a>
+            <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary btn-lg">Back</button></a>
           </div>
         </div><!-- /.box-footer-->
 

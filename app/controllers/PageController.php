@@ -116,7 +116,18 @@
       $data = array(
         'patientdata' => Treatment::join('patient', 'treatmentRecord.patient_id', '=', 'patient.patient_id')
         ->join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
-        ->orderBy('treatmentRecord.created_at','desc')->get(),
+        ->orderBy('treatmentRecord.created_at','desc')
+        ->select('patient.patient_national_id',
+         'patient.patient_name',
+         'treatmentRecord.record_id',
+         'treatmentRecord.state',
+         'treatmentRecord.snake_type',
+         'treatmentRecord.nextbloodtest',
+         'treatmentRecord.status',
+         'treatmentRecord.created_at',
+         'treatmentRecord.staterepeat',
+         'snake.snake_thai_name'
+         )->get(),
         'datenow' => date('Y/m/d')
       );
        return View::make('page.patienttable',$data);
@@ -137,6 +148,9 @@
       if ($treatments->snake_group == 2) {
         return View::make('page.flowchart2-1',$data);
       }
+      if ($treatments->snake_group == 3) {
+        return View::make('page.flowchart3-1',$data);
+      }
 
     }
 
@@ -152,9 +166,7 @@
       if ($treatments->snake_group == 1) {
       return View::make('page.flowchart1-2',$data);
       }
-      if ($treatments->snake_group == 2) {
-      return View::make('page.flowchart2-2',$data);
-      }
+      
     }
 
   }
