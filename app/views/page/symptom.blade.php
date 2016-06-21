@@ -93,13 +93,13 @@
                       <div class="form-group">
                         <div class='radio-inline'>
                           <label>
-                            <input type='radio' name='progressionweakness' value='1' required {{ $treatmentdata->motor_weakness == 1 ? 'checked' : '' }}>
+                            <input type='radio' name='progressionweakness' value='1' required {{ $treatmentdata->progression_weakness == 1 ? 'checked' : '' }}>
                             <h1>Yes</h1>
                           </label>
                         </div>
                         <div class='radio-inline'>
                           <label>
-                            <input type='radio' name='progressionweakness' value='0'  {{ $treatmentdata->motor_weakness == 0 ? 'checked' : '' }}>
+                            <input type='radio' name='progressionweakness' value='0'  {{ $treatmentdata->progression_weakness == 0 ? 'checked' : '' }}>
                             <h1>No</h1>
                           </label>
                         </div>

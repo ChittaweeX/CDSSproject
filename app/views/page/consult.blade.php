@@ -79,7 +79,7 @@
                                {{$patientdata->state == 6 || $patientdata->state == 11 || $patientdata->state == 9 ? 'selected' : '' }}
                              @endif
                              @if ($patientdata->snake_group == 2)
-                               {{$patientdata->state == 5 || $patientdata->state == 2 || $patientdata->state == 7  ? 'selected' : '' }}
+                               {{$patientdata->state == 5 || $patientdata->state == 2 || $patientdata->state == 7 || $patientdata->state == 10 ? 'selected' : '' }}
                              @endif>
                                 Emergency case
                              </option>

@@ -102,6 +102,9 @@
                      @if($pdata->state == 9)
                       <strong>Discordance of data</strong>
                      @endif
+                     @if($pdata->state == 10)
+                      <strong>Consult PC</strong>
+                     @endif
 
                    @endif
 

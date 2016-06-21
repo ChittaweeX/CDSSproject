@@ -87,14 +87,14 @@ op2=>operation: Intubation and ventilation support
 (Consult PC)|{{$patientdata->state == 2 ? 'current':'past'}}
 op3=>operation: Antivenom for {{$patientdata->snake_name}} 10 vials
 Observe motor weakness q 1 hr for 12 hr|{{$patientdata->state == 4 ? 'current':'past'}}
-op4=>operation: 
+op4=>operation:
 @if ($patientdata->state == 9)
   Discordance of data
 @endif
 @if ($patientdata->state == 8)
   Chang Snake type
 @endif
-Consult PC|{{$patientdata->state == 5 || $patientdata->state == 8 || $patientdata->state == 9  ? 'current':'past'}}
+Consult PC|{{$patientdata->state == 5 || $patientdata->state == 8 || $patientdata->state == 9 || $patientdata->state == 10 ? 'current':'past'}}
 @if ($patientdata->state == 6)
 :>{{url("page/flowchart2/$patientdata->record_id")}}
 @endif
