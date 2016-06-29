@@ -79,7 +79,7 @@
 @section('maincontent')
   <!-- Main content -->
   <section class="content">
-    <div><textarea id="code" style="width: 100%;" rows="11" hidden="">
+    @if ($patientdata->snake_type==4 or $patientdata->snake_type==5)<div><textarea id="code" style="width: 100%;" rows="11" hidden="">
 st=>operation: การดูแลผู้ป่วยถูก{{$patientdata->snake_thai_name}}กัด|past
 e=>operation: Done|{{$patientdata->state == 6 ? 'current':'past'}}
 op1=>operation: Observe motor weakness q 1 hr for 24 hr|{{$patientdata->state == 1 ? 'current':'past'}}
@@ -107,8 +107,38 @@ cond4(yes,right)->op4
 cond4(no)->e
 cond2(yes)->op3
 cond2(no)->e
+    </textarea></div>
+    @else<div><textarea id="code" style="width: 100%;" rows="11" hidden="">
+st=>operation: การดูแลผู้ป่วยถูก{{$patientdata->snake_thai_name}}กัด|past
+e=>operation: Done|{{$patientdata->state == 6 ? 'current':'past'}}
+op1=>operation: Observe motor weakness q 1 hr for 24 hr|{{$patientdata->state == 1 ? 'current':'past'}}
+op2=>operation: Intubation and ventilation support
+(Consult PC)|{{$patientdata->state == 2 ? 'current':'past'}}
+op3=>operation: Antivenom for {{$patientdata->snake_name}} 10 vials
+Observe motor weakness q 1 hr for 12 hr|{{$patientdata->state == 4 ? 'current':'past'}}
+op4=>operation: Consult PC|{{$patientdata->state == 5 || $patientdata->state == 8 || $patientdata->state == 9 || $patientdata->state == 10  ? 'current':'past'}}
+@if ($patientdata->state == 6)
+:>{{url("page/flowchart2/$patientdata->record_id")}}
+@endif
+cond1=>condition: Impending respiratory
+failure|approved
+cond2=>condition: Any motor weakness|approved
+cond3=>condition: Progression of weakness|approved
+cond4=>condition: At 12 hr, any motor
+weakness|approved
+
+st->cond1
+cond1(yes,right)->op2->op3->cond3
+cond1(no)->op3
+cond3(yes,right)->op4
+cond3(no)->cond4
+cond4(yes,right)->op4
+cond4(no)->e
+cond2(yes)->op3
+cond2(no)->e
 
     </textarea></div>
+    @endif
     <div><button id="run" type="button" hidden="">Run</button></div>
 
     <div class="col-sm-12">

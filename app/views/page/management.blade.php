@@ -43,6 +43,10 @@
               @endif
             @endif
 
+            @if ($patientdata->snake_group == 3)
+                <input type="hidden" name="logtext" value="Observe and Bloodtest">
+            @endif
+
 
 
           <div class="box-header with-border">
@@ -90,6 +94,22 @@
                       <h2>{{$patientdata->state_text}} {{$patientdata->snake_name}} {{$patientdata->state_vials}}</h2>
                       @else
                         <h2>{{$patientdata->state_text}}</h2>
+                    @endif
+                  @endif
+
+                  @if ($patientdata->snake_group == 3)
+                    @if ($patientdata->state == 2)
+                      <h2><strong>Observe weakness and neuro sign q 1 hr for 24 hr <br>
+                         Observe bleeding and bleeding precaution </strong><hr>
+                         <strong>CBC,PT,INR,20-min WBCT initially and then <br>
+                        every 6 hr for 4 times(0,6,12,18,24) <br>
+                        Initial creatinine and then next 24 hr (0,24)</strong></h2>
+                    @endif
+                    @if ($patientdata->state == 7)
+                      <h2><h2>{{$patientdata->state_text}}</h2></h2>
+                    @endif
+                    @if ($patientdata->state == 8)
+                      <h2><h2>{{$patientdata->state_text}}</h2></h2>
                     @endif
                   @endif
 

@@ -83,19 +83,29 @@
                     @foreach($bloodtestdata as $blood )
                       <tr>
                         <td>
-                          @if($blood->state==1)
-                            CBC,PT,INR, 20 min WBCT,BUN, Creatinine , UA
+                          @if ($patientdata->snake_group == 1)
+                            @if($blood->state==1)
+                              CBC,PT,INR, 20 min WBCT,BUN, Creatinine , UA
+                            @endif
+                            @if($blood->state==5)
+                            Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time
+                            @endif
+                            @if($blood->state==2)
+                            CBC,PT,INR,20 min WBCT q 6 hr for 2 time (6,12)
+                            @endif
+                            @if($blood->state==3)
+                            D/C CBC,PT,INR,20 min WBCT,Creatinine Once daily for 3 days(24-36,48-60,72-84)
+                            @endif
                           @endif
-                          @if($blood->state==5)
-                          Repeat CBC,PT,INR,20 min WBCT q 4 hr for 3 time
+                          @if ($patientdata->snake_group == 3)
+                            @if($blood->state==3)
+                            CBC,PT,INR,20-min WBCT initially and then every 6 hr for 4 times(0,6,12,18,24) <br>
+                            Initial creatinine and then next 24 hr (0,24)
+                            @endif
+                            @if($blood->state==7)
+                            CBC,PT,INR,20-min WBCT,creatinine once daily for 2 time(48,72)
+                            @endif
                           @endif
-                          @if($blood->state==2)
-                          CBC,PT,INR,20 min WBCT q 6 hr for 2 time (6,12)
-                          @endif
-                          @if($blood->state==3)
-                          D/C CBC,PT,INR,20 min WBCT,Creatinine Once daily for 3 days(24-36,48-60,72-84)
-                          @endif
-
                         </td>
                         <td {{ ($blood->INR >= 1.20 ? 'class="text-danger"': 'class="text-success"') }}>
                           {{ $blood->INR ==0 ? '' : $blood->INR }}

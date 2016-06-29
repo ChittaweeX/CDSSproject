@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-	return Redirect::to('page/createnew');;
+	return Redirect::to('page/createnew');
 });
 
 

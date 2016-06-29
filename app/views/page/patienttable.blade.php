@@ -31,8 +31,8 @@
                 <th >Snake</th>
                 <th>Current State</th>
                 <th>Next</th>
-                <th>Status</th>
-                <th>
+                <th width="10%">Status</th>
+                <th width="7%">
                   Create At
                 </th>
                 <th>Action</th>
@@ -110,26 +110,59 @@
                      @if($pdata->state == 1)
                       <strong>Consult PC</strong>
                      @endif
-                   @endif
+                     @if($pdata->state == 4)
+                      <strong>Consult PC</strong>
+                     @endif
+                     @if($pdata->state == 5)
+                      <strong>Consult PC</strong>
+                     @endif
+                     @if($pdata->state == 6)
+                      <strong>Consult PC</strong>
+                     @endif
+                     @if($pdata->state == 7)
+                      <strong>CBC,PT,INR,20-min WBCT,creatinine once daily for 2 time(48,72)({{$pdata->staterepeat2}}/2)</strong>
+                     @endif
+                     @if($pdata->state == 8)
+                      <strong>Done</strong>
+                     @endif
+                     @if($pdata->state == 2)
+                      <strong>Observe weakness and neuro sign q 1 hr for 24 hr <br>
+                         Observe bleeding and bleeding precaution ({{$pdata->staterepeat}}/25)</strong><hr>
+                         <strong>CBC,PT,INR,20-min WBCT initially and then <br>
+                        every 6 hr for 4 times(0,6,12,18,24) ({{$pdata->staterepeat2}}/5)<br>
+                        Initial creatinine and then next 24 hr (0,24)</strong>
+                     @endif
+                  @endif
 
                  </td>
                  <td width="4%">
-                   @if ($pdata->nextbloodtest == 0)
+                   @if($pdata->statetime == 0)
                       None
                      @else
-                      <div data-countdown="{{ $pdata->nextbloodtest}}"></div>
+                      <div data-countdown="{{$pdata->statetime}}"></div>
+                      @if ($pdata->snake_type == 8 and $pdata->state == 2)
+                        <br>
+                        <hr>
+                      <div data-countdown="{{$pdata->statetime2}}"></div>
+                      @endif
                    @endif
                  </td>
                  <td>
                    @if($pdata->status == 1)
                      <span class="label label-danger">Consult PC</span>
                    @elseif($pdata->status == 2)
-                     <span class="label label-warning">Repeat Bloodtest</span>
+                     <span class="label label-success">Repeat Bloodtest</span>
                    @elseif($pdata->status == 3)
                      <span class="label label-success">Done</span>
                    @elseif($pdata->status == 4)
-                     <span class="label label-info">Repeat Observe</span>
-                   @endif
+                     <span class="label label-warning">Repeat Observe</span>
+                   @elseif($pdata->status == 5)
+                    <span class="label label-warning">Repeat Observe</span>
+                   <br>
+                   <br>
+                   <hr>
+                   <span class="label label-success">Repeat Bloodtest</span>
+                 @endif
                  </td>
                  <td>
                    {{ $pdata->created_at }}
@@ -143,17 +176,27 @@
                        <i class="fa fa-sitemap"></i>
                      </button></a>
                    @if($pdata->status == 2 )
-                     <a href="{{ url("page/symptom/$pdata->record_id") }}" data-toggle="tooltip" data-placement="bottom" title="Repeat Bloodtest">
-                       <button type="button" class="btn btn-sm btn-warning btn-flat">
+                     <a href="{{ url("page/symptom/$pdata->record_id/1") }}" data-toggle="tooltip" data-placement="bottom" title="Repeat Bloodtest">
+                       <button type="button" class="btn btn-sm btn-success btn-flat">
                         <i class="fa fa-eyedropper"></i>
                        </button></a>
                    @endif
                    @if($pdata->status == 4 )
-                     <a href="{{ url("page/symptom/$pdata->record_id") }}" data-toggle="tooltip" data-placement="bottom" title="Repeat Observe">
+                     <a href="{{ url("page/symptom/$pdata->record_id/2") }}" data-toggle="tooltip" data-placement="bottom" title="Repeat Observe">
                        <button type="button" class="btn btn-sm btn-warning btn-flat">
                          <i class="fa fa-stethoscope"></i>
                        </button></a>
                    @endif
+                   @if($pdata->status == 5 )
+                        <a href="{{ url("page/symptom/$pdata->record_id/1") }}" data-toggle="tooltip" data-placement="bottom" title="Repeat Bloodtest">
+                         <button type="button" class="btn btn-sm btn-success btn-flat">
+                          <i class="fa fa-eyedropper"></i>
+                         </button></a>
+                     <a href="{{ url("page/symptom/$pdata->record_id/2") }}" data-toggle="tooltip" data-placement="bottom" title="Repeat Observe">
+                       <button type="button" class="btn btn-sm btn-warning btn-flat">
+                         <i class="fa fa-stethoscope"></i>
+                       </button></a>
+                  @endif
                 </td>
                </tr>
              @endforeach
@@ -166,7 +209,7 @@
           <div class="col-sm-12">
             <span class="label label-info"><i class="fa fa-file-text-o"></i> : View Overview</span>
             <span class="label label-default"><i class="fa fa-sitemap"></i> : View FlowChart</span>
-            <span class="label label-warning"><i class="fa fa-eyedropper"></i> : Repeat Bloodtest</span>
+            <span class="label label-success"><i class="fa fa-eyedropper"></i> : Repeat Bloodtest</span>
             <span class="label label-warning"><i class="fa fa-stethoscope"></i> : Repeat Observe</span>
           </div>
         </div>
@@ -201,7 +244,7 @@
   $('[data-countdown]').each(function() {
    var $this = $(this), finalDate = $(this).data('countdown');
    $this.countdown(finalDate, function(event) {
-     $this.html(event.strftime('%D days %H:%M:%S'));
+     $this.html(event.strftime('%H:%M:%S'));
    });
  });
    </script>

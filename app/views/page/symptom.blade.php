@@ -20,6 +20,7 @@
         <div class="box">
           <form role="form" action="{{ url('function/symptom') }}" method="post">
             <input type="hidden" name="treatmentid" value="{{ $treatmentdata->record_id }}">
+            <input type="hidden" name="case" value="{{$case}}">
           <div class="box-header with-border">
             <h3 class="box-title"><strong>Symptom Check</strong></h3>
           </div>
@@ -94,7 +95,7 @@
                         <div class="form-group">
                           <div class='radio-inline'>
                             <label>
-                              <input type='radio' name='progressionweakness' value='1' required {{ $treatmentdata->progression_weakness == 1 ? 'checked' : '' }}>
+                              <input type='radio' id="progressionweakness" name='progressionweakness'  value='1' required {{ $treatmentdata->progression_weakness == 1 ? 'checked' : '' }}>
                               <h1>Yes</h1>
                             </label>
                           </div>
@@ -189,8 +190,8 @@
           </div><!-- /.box-body -->
           <div class="box-footer">
             <div class="text-center">
+              <a href="{{ url('page/patienttable') }}"><button type="button" class="btn  btn-default btn-lg btn-flat">Back</button></a>
               <button type="submit" class="btn  btn-primary btn-lg btn-flat">Next</button>
-
             </div>
           </div><!-- /.box-footer-->
           </form>
@@ -208,10 +209,9 @@
   <!-- Clock picker -->
   <script src="{{ url('assets/plugins/clockpicker/clockpicker.js') }} "></script>
   <script src="{{ url('assets/plugins/datapicker/bootstrap-datepicker.js') }} "></script>
+
   <script>
       $(document).ready(function(){
-
-
         $('#data_1 .input-group.date').datepicker({
             todayBtn: "linked",
             keyboardNavigation: false,

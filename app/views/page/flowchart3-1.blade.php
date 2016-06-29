@@ -79,56 +79,99 @@
 @section('maincontent')
   <!-- Main content -->
   <section class="content">
-    <div><textarea id="code" style="width: 100%;" rows="11" hidden="">
-st=>operation: Management for systemic bleeding from hematotoxic snake bite|past
+    @if ($patientdata->state == 4)<div><textarea id="code" style="width: 100%;" rows="11" hidden="">
+st=>operation: Identification for
+Neurotoxic snake|past
 e=>operation: Done|past
 
-op1=>operation: 1.Resuscitation
-2.Give antivenom ไม่ต้องรอผล lab
-3.Check CBC,PT,INR,20 min WBCT,Creatinine
-4.G/M blood component และให้ตามความเหมาะสม โดยเริ่มหลังจากให้ antivenom
-5.ปรึกษาศูนย์พิษวิทยา โทร 1367|past
+op1=>operation: งูจงอาง|past
 
-op2=>operation: Give Polyvalent
-Hematotoxic Snake
-antivenom 5 vials|{{$patientdata->snake_type == 8 ? 'current':'past'}}
+op2=>operation: งูเห่า|past
 
-op3=>operation: ปรึกษาศุนย์พิษวิทยา โทร 1367|current
+op3=>operation: งูทับสมิงคลา|past
 
-op4=>operation: Give Malayan Pit
-Viper antivenom 5 vials|{{$patientdata->snake_type == 3 ? 'current':'past'}}
+op4=>operation: Consult PC
+(งูกะปะ/งูสามเหลี่ยม แยกด้วยระบาดวิทยา)|current
 
-op5=>operation: Give Green Pit
-Viper antivenom 5 vials|{{$patientdata->snake_type == 2 ? 'current':'past'}}
+cond1=>condition: Local edema|approved
 
-op6=>operation: Give Russell
-Viper antivenom 5 vials|{{$patientdata->snake_type == 1 ? 'current':'past'}}
+cond2=>condition: งูกัดแล้วงับค้าง|approved
 
-cond1=>condition: Known
-type of
-snake|approved
+cond3=>condition: งูเข้ามากัดภายในบ้าน|approved
 
-cond2=>condition: Malayan Pit Viper ?|approved
 
-cond3=>condition: Green Pit Viper ?|approved
 
-cond4=>condition: Russell Viper ?|approved
+
+
+st->cond1
+cond1(yes,right)->cond2
+cond1(no)->cond3
+cond2(yes,right)->op1
+cond2(no)->op2
+cond3(yes,right)->op3
+cond3(no)->op4
+    </textarea></div>
+  @elseif ($patientdata->state == 6)<div><textarea id="code" style="width: 100%;" rows="11" hidden="">
+st=>operation: Identification for
+Hematotoxic snake|past
+e=>operation: Done|past
+
+op2=>operation: งูแมวเซา|past
+op3=>operation: งูแมวเซา|past
+
+op4=>operation: Consult PC
+(งูเขียวหางไหม้/งูกะปะ แยกด้วยระบาดวิทยา)|current
+
+cond1=>condition: Acute renal failue|approved
+cond2=>condition: Local edema|approved
+
+
+
+
+
+st->cond1
+cond1(yes,right)->op2
+cond1(no)->cond2
+cond2(yes,right)->op4
+cond2(no)->op3
+    </textarea></div>
+    @else<div><textarea id="code" style="width: 100%;" rows="11" hidden="">
+st=>operation: Identification for snake
+without systemic symptom|past
+e=>operation: Done|past
+
+op1=>operation: 1.Observe weakness and neuro sign q 1 hr for 24 hr
+2.Observe bleeding and bleeding precaution
+3.CBC,PT,INR,20-min WBCT initially and then
+every 6 hr for 4 times(0,6,12,18,24)
+4.Initial creatinine and then next 24 hr (0,24)|{{$patientdata->state == 2 ? 'current':'past'}}
+
+op2=>operation: Identification for Neurotoxic snake|past
+op3=>operation: Identification for Hematotoxic snake|past
+op4=>operation: CBC,PT,INR,20-min WBCT,creatinine
+once daily for 2 time(48,72)|{{$patientdata->state == 7 ? 'current':'past'}}
+op5=>operation: Done|{{$patientdata->state == 8 ? 'current':'past'}}
+
+cond1=>condition: Motor
+weakness|approved
+cond2=>condition: Thrombocytopenia,or
+INR prolong,or
+20-min WBCT unclotted|approved
+cond3=>condition: กรอกค่า lab ครบ 2 รอบ|approved
+
 
 
 
 st->op1->cond1
-cond1(yes)->op2
+cond1(yes,right)->op2
 cond1(no)->cond2
-cond2(yes)->op4
-cond2(no)->cond3
+cond2(yes,right)->op3
+cond2(no)->op4
+op4->cond3
 cond3(yes)->op5
-cond3(no)->cond4
-cond4(yes)->op6
-op4->op3
-op2->op3
-op5->op3
-op6->op3
+cond3(no)->cond2
     </textarea></div>
+    @endif
     <div><button id="run" type="button" hidden="">Run</button></div>
 
     <div class="col-sm-12">

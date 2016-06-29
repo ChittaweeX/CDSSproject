@@ -25,12 +25,28 @@
       return View::make('page.confirmation',$data);
     }
 
-    public function getSymptom($treatmentid)
+    public function getSymptom($treatmentid,$case)
+    {
+      $data = array(
+        'treatmentdata' => Treatment::where('record_id','=',$treatmentid)->first(),
+        'case' => $case
+      );
+      return View::make('page.symptom',$data);
+    }
+    public function getSymptom2($treatmentid)
     {
       $data = array(
         'treatmentdata' => Treatment::where('record_id','=',$treatmentid)->first()
       );
-      return View::make('page.symptom',$data);
+      return View::make('page.symptom2',$data);
+    }
+
+    public function getSymptom3($treatmentid)
+    {
+      $data = array(
+        'treatmentdata' => Treatment::where('record_id','=',$treatmentid)->first()
+      );
+      return View::make('page.symptom3',$data);
     }
 
 
@@ -122,10 +138,12 @@
          'treatmentRecord.record_id',
          'treatmentRecord.state',
          'treatmentRecord.snake_type',
-         'treatmentRecord.nextbloodtest',
+         'treatmentRecord.statetime',
+         'treatmentRecord.statetime2',
          'treatmentRecord.status',
          'treatmentRecord.created_at',
          'treatmentRecord.staterepeat',
+         'treatmentRecord.staterepeat2',
          'snake.snake_thai_name'
          )->get(),
         'datenow' => date('Y/m/d')
@@ -166,7 +184,7 @@
       if ($treatments->snake_group == 1) {
       return View::make('page.flowchart1-2',$data);
       }
-      
+
     }
 
   }

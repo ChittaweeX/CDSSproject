@@ -31,7 +31,12 @@
               <h2>Snake : {{ $patientdata->snake_thai_name }}</h2>
               <hr>
               <h2>State :
-                {{ $patientdata->state_text }}</h2>
+                @if ($patientdata->snake_type == 8 and $patientdata->state2 == 3)
+                  CBC,PT,INR,20-min WBCT initially and then every 6 hr for 4 times(0,6,12,18,24),Initial creatinine and then next 24 hr (0,24)
+                @else
+                {{ $patientdata->state_text }}
+                @endif
+                </h2>
               <hr>
             </div>
                 <div class="row">
