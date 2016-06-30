@@ -4,7 +4,8 @@
    */
    class ManageController extends Controller
   {
-    //// STEP 1 /////////////////////////////
+    /* Action form page/createnew  and return to page/confirmation
+    */
     public function postCreatenew()
     {
       $inputs = Input::all();
@@ -36,7 +37,8 @@
       }
 
     }
-    //// STEP 2 /////////////////////////////
+    /* Action form page/confirmation  and return next to page/symptomCheck
+    */
     public function postConfirmdata()
     {
       Session::flush();
@@ -96,7 +98,11 @@
       return Redirect::to("page/symptom/$treatmentid/0");
     }
 
-    //// STEP 3 Link to 4/////////////////////////////
+    /* Action form page/symptom and return next to function  stateCheck($treatmentid,$case)
+      "Record data and update State for Snake_type=8(UnknownSnake)"
+
+      Send Symtom to Check State .
+    */
     public function postSymptom()
     {
       $observe = new Observe();
@@ -204,7 +210,8 @@
         }
       }
     }
-    //// STEP 4 /////////////////////////////
+    /* Check current State And Check symtom
+    */
     public function stateCheck($treatmentid,$case)
     {
       $treatments = Treatment::join('snake', 'treatmentRecord.snake_type', '=', 'snake.snake_id')
@@ -246,7 +253,7 @@
           }
         }
 
-        //// SNAKE GROUP 2  /////////////
+        //// SNAKE GROUP 2 nuro /////////////
         if ($treatments->snake_group == 2) {
           if (is_object($log)){
             if ($log->snake_type != $treatments->snake_type) {
@@ -290,7 +297,7 @@
               return $this->observeRecord($treatmentid,$motorweakness,$progressionweakness,$state);
             }
           }
-
+          //// SNAKE GROUP 3 nuro /////////////
           if ($treatments->snake_group == 3) {
             if ($treatments->systemic_bleeding == 1 ){
                 $treatments->state = 1;
@@ -332,7 +339,6 @@
 
     public function postBloodrecord()
     {
-
       $inputs =  Input::all();
       $id = $inputs['treatmentid'];
       $bloodtest = new Bloodtest();
@@ -345,9 +351,7 @@
       $bloodtest->save();
       $bloodid = $bloodtest->test_id;
       $treatmentid = $bloodtest->record_id;
-
       return $this->bloodCheck($bloodid,$treatmentid);
-
     }
 
 
